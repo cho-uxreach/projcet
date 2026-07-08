@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>協作會議提案｜跨境平台落地 · 當天現場 × 結構方法論</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --morning-ink:#1B2A4E; --morning-primary:#2C3E66; --morning-accent:#4A7BC9;
+    --morning-soft:#E8EEF7; --morning-bg:#F4F6FB;
+    --afternoon-ink:#5C1F0F; --afternoon-primary:#A03A24; --afternoon-accent:#D89B3F;
+    --afternoon-soft:#FBEEDA; --afternoon-bg:#FCF6EC;
+    --ink:#14172B; --text:#2D3142; --text-mute:#6B7280; --line:#DFE3EC;
+    --paper:#FFFFFF; --bg:#FAF7EF; --night:#0F1320; --gold:#C08A2E;
+    /* 角色配色 */
+    --r-proposer:#D14F3C; --r-moda:#1B2A4E; --r-legal:#3B4A6B; --r-ncc:#2C6E8F;
+    --r-platform:#7A7D85; --r-consumer:#C28B2F; --r-expert:#2C3E66;
+    --r-facilitator:#1F7A5C; --r-po:#6C4B8E;
+    --serif:'Noto Serif TC','Source Han Serif TC',serif;
+    --display:'Fraunces',var(--serif);
+    --sans:'Noto Sans TC','PingFang TC',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --r-s:6px; --r-m:12px; --r-l:20px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:var(--sans); color:var(--text); line-height:1.75; font-size:16px;
+    background:var(--bg);
+    background-image:
+      linear-gradient(rgba(27,42,78,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,42,78,0.028) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 32px; }
+  strong { font-weight:700; color:var(--ink); }
+
+  /* 頂部分頁 */
+  .top-nav { position:sticky; top:0; z-index:100;
+    background:rgba(250,247,239,0.90); backdrop-filter:saturate(180%) blur(12px);
+    -webkit-backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line); }
+  .top-nav-inner { max-width:1180px; margin:0 auto; padding:14px 32px;
+    display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
+  .brand { font-family:var(--display); font-size:18px; font-weight:600; color:var(--ink);
+    letter-spacing:-0.01em; }
+  .brand-tag { display:inline-block; margin-left:10px; font-family:var(--mono); font-size:10px;
+    letter-spacing:0.12em; color:var(--text-mute); padding:2px 8px; border:1px solid var(--line);
+    border-radius:20px; vertical-align:middle; }
+  .page-tabs { display:flex; gap:8px; }
+  .page-tabs button { font-family:var(--sans); font-size:13.5px; font-weight:500; cursor:pointer;
+    padding:8px 18px; border-radius:30px; border:1px solid var(--line); background:transparent;
+    color:var(--text-mute); transition:all .18s ease; }
+  .page-tabs button:hover { border-color:var(--afternoon-accent); color:var(--afternoon-ink); }
+  .page-tabs button.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .page-tabs button:focus-visible { outline:2px solid var(--afternoon-accent); outline-offset:2px; }
+
+  .page { display:none; animation:fadeIn .4s ease; }
+  .page.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:none;} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:none;} }
+
+  section { padding:72px 0; border-bottom:1px solid var(--line); }
+  .section-tag { display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
+    color:var(--afternoon-primary); font-weight:600; margin-bottom:14px; }
+  .section-title { font-family:var(--serif); font-size:30px; font-weight:700; color:var(--ink);
+    line-height:1.35; letter-spacing:-0.01em; margin-bottom:18px; }
+  .section-lead { font-size:17px; color:var(--text); max-width:860px; line-height:1.9; }
+  .section-lead strong { color:var(--afternoon-ink); }
+
+  /* ===== HERO ===== */
+  .hero { background:linear-gradient(160deg,#12203f 0%,#1B2A4E 55%,#2a1810 130%);
+    border-bottom:none; color:#fff; padding:88px 0 96px; position:relative; overflow:hidden; }
+  .hero::after { content:""; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+    background-size:30px 30px; pointer-events:none; }
+  .hero .wrap { position:relative; z-index:1; }
+  .p1-kicker { font-family:var(--mono); font-size:12px; letter-spacing:0.18em; color:#D89B3F;
+    margin-bottom:20px; }
+  .p1-date { font-family:var(--mono); font-size:13px; color:rgba(255,255,255,0.72);
+    margin-bottom:22px; }
+  .p1-headline { font-family:var(--serif); font-size:clamp(30px,4.4vw,50px); font-weight:900;
+    line-height:1.28; letter-spacing:-0.01em; color:#fff; margin-bottom:26px; }
+  .p1-sub { font-size:17.5px; line-height:2; color:rgba(255,255,255,0.86); max-width:900px; }
+  .p1-sub strong { color:#F2C879; }
+  .hero-quote { margin-top:34px; padding:18px 26px; border-left:3px solid #D89B3F;
+    background:rgba(255,255,255,0.05); border-radius:0 var(--r-m) var(--r-m) 0;
+    font-family:var(--serif); font-size:16px; color:rgba(255,255,255,0.9); font-style:italic; }
+
+  /* ===== 議題定位卡 ===== */
+  .locate { display:grid; grid-template-columns:1.15fr 0.85fr; gap:40px; align-items:center; }
+  @media(max-width:880px){ .locate{ grid-template-columns:1fr; } }
+  .locate-meta { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:26px 0 22px; }
+  .meta-cell { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-m);
+    padding:16px 18px; border-left:3px solid var(--morning-accent); }
+  .meta-k { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color:var(--text-mute);
+    margin-bottom:6px; }
+  .meta-v { font-size:16px; font-weight:700; color:var(--ink); }
+  .meta-v small { display:block; font-weight:400; font-size:12.5px; color:var(--text-mute);
+    margin-top:3px; letter-spacing:0; }
+  .radar-box { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-l);
+    padding:22px 18px 14px; text-align:center; box-shadow:0 4px 20px rgba(27,42,78,0.06); }
+  .radar-box h4 { font-family:var(--serif); font-size:16px; color:var(--afternoon-ink);
+    margin-bottom:2px; }
+  .radar-box .rk { font-family:var(--mono); font-size:11px; color:var(--text-mute);
+    letter-spacing:0.08em; margin-bottom:8px; }
+  .radar-note { font-size:12.5px; color:var(--text-mute); line-height:1.7; text-align:left;
+    border-top:1px dashed var(--line); margin-top:10px; padding-top:10px; }
+  .radar-note b { color:var(--afternoon-primary); }
+  .stars { font-size:20px; letter-spacing:2px; color:#A03A24; }
+
+  .compare { margin-top:12px; }
+  .compare-title { font-family:var(--mono); font-size:12px; letter-spacing:0.1em;
+    color:var(--text-mute); margin-bottom:12px; }
+  .compare-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  @media(max-width:760px){ .compare-grid{ grid-template-columns:1fr; } }
+  .compare-card { background:var(--morning-bg); border:1px solid var(--line);
+    border-radius:var(--r-m); padding:14px 16px; }
+  .compare-card .cno { font-family:var(--mono); font-size:11px; color:var(--afternoon-primary);
+    font-weight:700; }
+  .compare-card .cti { font-size:13.5px; font-weight:500; color:var(--ink); line-height:1.55;
+    margin-top:5px; }
+  .compare-card .cme { font-size:11.5px; color:var(--text-mute); margin-top:6px; }
+
+  /* ===== 角色陣容 ===== */
+  .cast-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:12px; }
+  @media(max-width:900px){ .cast-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:600px){ .cast-grid{ grid-template-columns:1fr; } }
+  .cast-card { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-m);
+    padding:18px 18px 16px; border-left:4px solid var(--rc,#888); position:relative;
+    transition:transform .18s ease, box-shadow .18s ease; }
+  .cast-card:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(27,42,78,0.08); }
+  .cast-role { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .cast-name { font-family:var(--serif); font-size:16.5px; font-weight:700; color:var(--ink); }
+  .cast-tag { font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:#fff;
+    background:var(--rc,#888); padding:2px 7px; border-radius:20px; }
+  .cast-desc { font-size:13px; color:var(--text-mute); margin:6px 0 10px; line-height:1.65; }
+  .cast-line { font-size:14px; color:var(--text); line-height:1.7; padding-left:12px;
+    border-left:2px solid var(--morning-soft); font-style:italic; }
+  .cast-line::before { content:"“"; color:var(--rc,#888); font-weight:700; margin-right:1px; }
+  /* 兩張新類型卡：虛線 + 斜線質感 */
+  .cast-card.new-type { border-style:dashed; border-width:1.5px; border-left-width:4px;
+    border-color:var(--rc,#888); background-color:#fbfaf6;
+    background-image:repeating-linear-gradient(45deg, rgba(0,0,0,0.022) 0 6px, transparent 6px 12px); }
+  .newtype-flag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:0.06em;
+    color:var(--rc,#888); border:1px dashed var(--rc,#888); border-radius:20px; padding:1px 8px;
+    margin-bottom:8px; }
+
+  /* ===== 三幕劇 ===== */
+  .act { margin-top:34px; border:1px solid var(--line); border-radius:var(--r-l); overflow:hidden;
+    background:var(--paper); }
+  .act-head { padding:18px 24px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 16px;
+    color:#fff; }
+  .act.am .act-head { background:linear-gradient(100deg,var(--morning-ink),var(--morning-primary)); }
+  .act.br .act-head { background:linear-gradient(100deg,#4a3a2a,#6b533a); }
+  .act.pm .act-head { background:linear-gradient(100deg,var(--afternoon-ink),var(--afternoon-primary)); }
+  .act-num { font-family:var(--mono); font-size:13px; font-weight:700; letter-spacing:0.06em; }
+  .act-title { font-family:var(--serif); font-size:18px; font-weight:700; }
+  .act-purpose { font-size:12.5px; color:rgba(255,255,255,0.8); width:100%; }
+  .scene { display:grid; grid-template-columns:96px 1fr; border-top:1px solid var(--line); }
+  .scene:first-of-type { border-top:none; }
+  .scene-time { padding:18px 12px; text-align:center; font-family:var(--mono); font-size:15px;
+    font-weight:700; color:var(--afternoon-ink); background:var(--afternoon-bg);
+    border-right:1px solid var(--line); }
+  .act.am .scene-time { color:var(--morning-ink); background:var(--morning-bg); }
+  .scene-body { padding:18px 22px; }
+  .narration { display:block; font-size:14px; color:var(--text-mute); line-height:1.8;
+    margin-bottom:10px; }
+  .dialogue { font-size:14.5px; line-height:1.85; color:var(--text); background:var(--morning-bg);
+    border-radius:var(--r-s); padding:12px 15px; margin-top:8px; }
+  .speaker { display:inline-block; font-family:var(--mono); font-size:11px; font-weight:700;
+    color:#fff; background:var(--morning-primary); padding:2px 9px; border-radius:20px;
+    margin-right:8px; letter-spacing:0.04em; }
+  .action { display:block; font-size:13.5px; color:var(--afternoon-ink); line-height:1.8;
+    margin-top:9px; padding:10px 14px; background:var(--afternoon-soft); border-radius:var(--r-s);
+    border-left:3px solid var(--afternoon-accent); }
+  .action::before { content:"設計意圖 · "; font-family:var(--mono); font-size:10.5px; font-weight:700;
+    letter-spacing:0.06em; color:var(--afternoon-primary); }
+  .keyscene .scene-time { background:linear-gradient(160deg,#A03A24,#7a2a18); color:#fff; }
+  .keyscene .scene-body { background:#fdf4ee; }
+  .key-badge { display:inline-block; font-family:var(--mono); font-size:10px; font-weight:700;
+    letter-spacing:0.06em; color:#fff; background:#A03A24; padding:2px 8px; border-radius:20px;
+    margin-bottom:8px; }
+
+  /* ===== 服務藍圖 ===== */
+  .bp-scroll { overflow-x:auto; margin-top:14px; border:1px solid var(--line);
+    border-radius:var(--r-m); }
+  table.bp { border-collapse:collapse; width:100%; min-width:920px; font-size:12.5px; }
+  table.bp th, table.bp td { border:1px solid var(--line); padding:9px 10px; vertical-align:top;
+    text-align:left; }
+  table.bp thead th { background:var(--ink); color:#fff; font-family:var(--mono); font-weight:500;
+    font-size:11.5px; letter-spacing:0.04em; text-align:center; position:sticky; top:0; }
+  table.bp tbody th { background:var(--morning-bg); font-family:var(--serif); font-weight:700;
+    color:var(--ink); font-size:12.5px; white-space:nowrap; width:104px; }
+  table.bp td { color:var(--text); line-height:1.6; }
+  table.bp td.key { background:#fdf4ee; border-left:3px solid var(--afternoon-primary);
+    font-weight:500; color:var(--afternoon-ink); }
+  .lane-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px;
+    vertical-align:middle; }
+
+  .mot-summary { margin-top:22px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media(max-width:820px){ .mot-summary{ grid-template-columns:1fr; } }
+  .mot-card { background:#fdf4ee; border:1px solid #efd9cc; border-radius:var(--r-m);
+    padding:16px 18px; border-top:3px solid var(--afternoon-primary); }
+  .mot-time { font-family:var(--mono); font-size:12px; color:var(--afternoon-primary);
+    font-weight:700; }
+  .mot-t { font-family:var(--serif); font-size:15px; font-weight:700; color:var(--ink);
+    margin:5px 0 6px; }
+  .mot-d { font-size:13px; color:var(--text-mute); line-height:1.7; }
+
+  /* ===== 六視角矩陣 ===== */
+  .matrix { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:14px; }
+  @media(max-width:900px){ .matrix{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:600px){ .matrix{ grid-template-columns:1fr; } }
+  .persp { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-m);
+    padding:18px; }
+  .persp-axis { font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em;
+    color:var(--text-mute); margin-bottom:8px; }
+  .persp-axis b { color:var(--afternoon-primary); }
+  .persp-t { font-family:var(--serif); font-size:16px; font-weight:700; color:var(--ink);
+    margin-bottom:7px; }
+  .persp-d { font-size:13.5px; color:var(--text); line-height:1.75; }
+
+  /* ===== reframe bridge ===== */
+  .reframe { margin-top:14px; display:grid; grid-template-columns:1fr auto 1fr; gap:20px;
+    align-items:stretch; }
+  @media(max-width:820px){ .reframe{ grid-template-columns:1fr; } }
+  .rf-box { border-radius:var(--r-l); padding:24px 26px; }
+  .rf-from { background:var(--morning-bg); border:1px solid var(--morning-soft); }
+  .rf-to { background:var(--afternoon-soft); border:1px solid #efd9cc; }
+  .rf-label { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; margin-bottom:10px; }
+  .rf-from .rf-label { color:var(--morning-primary); }
+  .rf-to .rf-label { color:var(--afternoon-primary); }
+  .rf-q { font-family:var(--serif); font-size:19px; font-weight:700; line-height:1.5; }
+  .rf-from .rf-q { color:var(--morning-ink); }
+  .rf-to .rf-q { color:var(--afternoon-ink); }
+  .rf-note { font-size:13px; color:var(--text-mute); margin-top:10px; line-height:1.7; }
+  .rf-arrow { display:flex; align-items:center; justify-content:center; font-size:30px;
+    color:var(--afternoon-primary); }
+  @media(max-width:820px){ .rf-arrow{ transform:rotate(90deg); } }
+
+  /* ===== HMW ===== */
+  .hmw-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px; }
+  @media(max-width:760px){ .hmw-grid{ grid-template-columns:1fr; } }
+  .hmw { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-m);
+    padding:20px 22px; border-left:4px solid var(--afternoon-accent); }
+  .hmw-n { font-family:var(--mono); font-size:12px; color:var(--afternoon-primary); font-weight:700;
+    margin-bottom:8px; }
+  .hmw-q { font-size:15.5px; font-weight:500; color:var(--ink); line-height:1.75; }
+  .hmw-q b { color:var(--afternoon-primary); }
+
+  /* ===== 他鄉故事 ===== */
+  .story-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:14px; }
+  @media(max-width:820px){ .story-grid{ grid-template-columns:1fr; } }
+  .story { background:linear-gradient(165deg,#fff,#faf5ec); border:1px solid #ece0cd;
+    border-radius:var(--r-m); padding:20px; }
+  .story-flag { font-family:var(--mono); font-size:11px; letter-spacing:0.08em; color:var(--gold);
+    font-weight:700; margin-bottom:8px; }
+  .story-t { font-family:var(--serif); font-size:16px; font-weight:700; color:var(--ink);
+    margin-bottom:8px; }
+  .story-d { font-size:13.5px; color:var(--text); line-height:1.78; }
+
+  /* ===== why grid ===== */
+  .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:14px; }
+  @media(max-width:760px){ .why-grid{ grid-template-columns:1fr; } }
+  .why-item { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-m);
+    padding:22px 24px; position:relative; }
+  .why-num { font-family:var(--display); font-size:30px; font-weight:900; color:var(--afternoon-soft);
+    position:absolute; top:14px; right:20px; }
+  .why-title { font-family:var(--serif); font-size:17px; font-weight:700; color:var(--ink);
+    margin-bottom:8px; padding-right:40px; }
+  .why-desc { font-size:14px; color:var(--text); line-height:1.8; }
+
+  /* ===== footer ===== */
+  footer { background:var(--night); color:#fff; padding:44px 0; border:none; }
+  footer .wrap { display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+    flex-wrap:wrap; }
+  .ft-brand { font-family:var(--display); font-size:19px; font-weight:600; }
+  .ft-meta { font-family:var(--mono); font-size:12px; color:rgba(255,255,255,0.6);
+    line-height:1.9; text-align:right; }
+  @media(max-width:600px){ .ft-meta{ text-align:left; } }
+</style>
+</head>
+<body>
+<div class="top-nav"><div class="top-nav-inner">
+  <div class="brand">協作會議結構提案<span class="brand-tag">CASE · 跨境平台落地</span></div>
+  <div class="page-tabs">
+    <button data-page="1" class="active">Page 1 · 當天現場</button>
+    <button data-page="2">Page 2 · 結構方法論</button>
+  </div>
+</div></div>
+<main>
+<div class="page active" id="page-1">
+  <section class="hero">
+    <div class="wrap">
+      <div class="p1-kicker">OPEN GOVERNMENT · 協作會議情境模擬</div>
+      <div class="p1-date">情境設定日 · 8 月 21 日,星期四　·　14:00 — 17:00(下午半日場)</div>
+      <h1 class="p1-headline">當「把外國平台抓來台灣負責」<br>這個訴求,真的走進協作會議——</h1>
+      <p class="p1-sub">
+        以「<strong>推動跨境數位平台設立臺灣實體據點、法定代理人與常駐真人客服申訴機制</strong>」這份提案為例(Joshua Liao 提案,<strong>附議 5,095、已通過門檻</strong>,主責機關<strong>數位發展部</strong>,回應期限 2026-09-03),我們依機關規劃的 <strong>14:00–17:00 下午半日議程</strong>,重現這場會議的那一天——當「帳號一夕被沒收、只收到 AI 罐頭信」的委屈、平台方「全球一致政策」的合規現實、與「乾脆全禁改用國產」的直覺同桌而坐,引導師如何在休息後把「<strong>該不該強制外國平台落地</strong>」翻轉成「<strong>如何讓被誤判的台灣人有真人可申訴、資料帶得走,又不誤傷本土新創</strong>」。
+      </p>
+      <div class="hero-quote">「使用者遭遇停權時,往往僅能面對自動化 AI 罐頭回信,全網缺乏可供實體接觸與對話的救濟窗口。」——提案原文</div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">01 — 議題定位</span>
+      <h2 class="section-title">先錨定:這是一場什麼難度、什麼類型的會議?</h2>
+      <div class="locate">
+        <div>
+          <p class="section-lead">
+            用 83 場協作會議的分類框架定位,這題是<strong>數位服務 × 跨部會協調 × 政策規劃前期</strong>的 <strong>★★★ 挑戰級</strong>案。但它的難,跟酒駕、違停那種「被悲劇推著走」的難<strong>完全不同</strong>——這裡幾乎沒有兩端民眾的血淚對立,雷達的<strong>價值衝突反而偏低</strong>;真正把它撐成 ★★★ 的,是<strong>認知門檻、資訊負荷與協調結構三軸同時觸頂</strong>:光是聽懂「指定代理人」「資料可攜」「去中心化通訊標準」就已勸退大半與會者。這正是單星制會漏掉的那種——<strong>不吵,但很難懂</strong>的題。
+          </p>
+          <div class="locate-meta">
+            <div class="meta-cell"><div class="meta-k">議題領域</div><div class="meta-v">數位服務<small>跨境平台治理 · 數位主權</small></div></div>
+            <div class="meta-cell"><div class="meta-k">問題類型</div><div class="meta-v">跨部會協調<small>數位部主責,牽動法務部/NCC/公平會/個資會/經濟部</small></div></div>
+            <div class="meta-cell"><div class="meta-k">政策生命週期</div><div class="meta-v">政策規劃前期<small>尚無專法,主責機關須研擬適法法規</small></div></div>
+            <div class="meta-cell"><div class="meta-k">難度等級</div><div class="meta-v"><span class="stars">★★★</span><small>挑戰級 · 資深 PO 示範題</small></div></div>
+          </div>
+          <div class="compare">
+            <div class="compare-title">過往可對照案例(取自 83 場資料庫)</div>
+            <div class="compare-grid">
+              <div class="compare-card"><div class="cno">#27 ★★★</div><div class="cti">跨境複雜的買賣爭議,需要跨部會及民間業者的智慧面對</div><div class="cme">消費者權益 · 跨部會 · 跨境管轄同源</div></div>
+              <div class="compare-card"><div class="cno">#51 ★★★</div><div class="cti">電視能夠播送地震警訊嗎?協作會議來討論</div><div class="cme">公共安全 · 通傳平台 × 跨部會</div></div>
+              <div class="compare-card"><div class="cno">#8 ★</div><div class="cti">開放政府第131次協作會議「數據公益運作指引(草案)」</div><div class="cme">數位服務 · 規劃前期同域</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="radar-box">
+          <h4>難度雷達</h4>
+          <div class="rk">五軸 0–4 · 大而尖向「認知/資訊」的紅形</div>
+          <svg viewBox="0 0 300 300" width="300" height="300" role="img"
+     aria-label="難度雷達圖：協調結構4、認知門檻4、資訊負荷4、政治鎖定度3、價值衝突2">
+  <polygon points="150.0,116.0 172.8,132.6 164.1,159.4 135.9,159.4 127.2,132.6" fill="none" stroke="rgba(27,42,78,0.10)" stroke-width="1"/>
+<polygon points="150.0,92.0 195.7,125.2 178.2,178.8 121.8,178.8 104.3,125.2" fill="none" stroke="rgba(27,42,78,0.10)" stroke-width="1"/>
+<polygon points="150.0,68.0 218.5,117.8 192.3,198.2 107.7,198.2 81.5,117.8" fill="none" stroke="rgba(27,42,78,0.10)" stroke-width="1"/>
+<polygon points="150.0,44.0 241.3,110.3 206.4,217.7 93.6,217.7 58.7,110.3" fill="none" stroke="rgba(27,42,78,0.10)" stroke-width="1"/>
+
+  <line x1="150" y1="140" x2="150.0" y2="44.0" stroke="rgba(27,42,78,0.14)" stroke-width="1"/>
+<line x1="150" y1="140" x2="241.3" y2="110.3" stroke="rgba(27,42,78,0.14)" stroke-width="1"/>
+<line x1="150" y1="140" x2="206.4" y2="217.7" stroke="rgba(27,42,78,0.14)" stroke-width="1"/>
+<line x1="150" y1="140" x2="93.6" y2="217.7" stroke="rgba(27,42,78,0.14)" stroke-width="1"/>
+<line x1="150" y1="140" x2="58.7" y2="110.3" stroke="rgba(27,42,78,0.14)" stroke-width="1"/>
+
+  <polygon points="150.0,44.0 241.3,110.3 206.4,217.7 107.7,198.2 104.3,125.2" fill="rgba(160,58,36,0.20)" stroke="#A03A24" stroke-width="2.2" stroke-linejoin="round"/>
+  <text x="150.0" y="18.0" text-anchor="middle" dy="0.32em" font-family="Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#5C1F0F">協調結構</text>
+<circle cx="150.0" cy="44.0" r="3.4" fill="#A03A24"/>
+<text x="266.0" y="102.3" text-anchor="start" dy="0.32em" font-family="Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#5C1F0F">認知門檻</text>
+<circle cx="241.3" cy="110.3" r="3.4" fill="#A03A24"/>
+<text x="221.7" y="238.7" text-anchor="start" dy="0.32em" font-family="Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#5C1F0F">資訊負荷</text>
+<circle cx="206.4" cy="217.7" r="3.4" fill="#A03A24"/>
+<text x="78.3" y="238.7" text-anchor="end" dy="0.32em" font-family="Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#5C1F0F">政治鎖定度</text>
+<circle cx="107.7" cy="198.2" r="3.4" fill="#A03A24"/>
+<text x="34.0" y="102.3" text-anchor="end" dy="0.32em" font-family="Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#5C1F0F">價值衝突</text>
+<circle cx="104.3" cy="125.2" r="3.4" fill="#A03A24"/>
+
+</svg>
+          <div class="radar-note">
+            <b>協調4／認知4／資訊4</b>三軸觸頂,<b>價值衝突僅2</b>。這是系列裡第一個「<b>價值衝突低、卻仍是 ★★★</b>」的形狀——證明難度不能只用「吵不吵」來量,<b>聽不聽得懂、扛不扛得住資訊量</b>是獨立的軸。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">02 — 與會陣容</span>
+      <h2 class="section-title">會議開始前,先認識坐在那張桌邊的九個人</h2>
+      <p class="section-lead">這場會議的張力不在情緒,而在「<strong>每個人聽得懂的世界不一樣</strong>」:提案人講的是被沒收帳號的痛,平台方講的是全球合規,學者講的是技術槓桿,而兩張<strong>虛線卡</strong>——原本不會在場的本土新創、與來鬧的網民——決定了這場會議會滑向民粹、還是收斂成能執行的政策。</p>
+      <div class="cast-grid">
+<div class="cast-card" style="--rc:var(--r-proposer)"><div class="cast-role"><span class="cast-name">Joshua Liao(提案人)</span><span class="cast-tag">提案方</span></div><div class="cast-desc">一人經營在地品牌,帳號因演算法誤判一夕停權,申訴只收到 AI 罐頭信。</div><div class="cast-line">我不是要跟平台吵架,我只是想找到一個『找得到、聽得懂人話』的窗口。</div></div>
+<div class="cast-card" style="--rc:var(--r-moda)"><div class="cast-role"><span class="cast-name">數位發展部代表</span><span class="cast-tag">政府 · 主責</span></div><div class="cast-desc">本案主責機關。想管,但『命令外國公司在台設法人』的法律效力與貿易衝擊得先釐清。</div><div class="cast-line">我們同意用戶需要救濟。但工具怎麼選、會不會踩到數位貿易協定,今天得談清楚。</div></div>
+<div class="cast-card" style="--rc:var(--r-legal)"><div class="cast-role"><span class="cast-name">法務部代表</span><span class="cast-tag">政府</span></div><div class="cast-desc">負責釐清『指定代理人』的法律定位、司法文書送達與裁罰的實質效力。</div><div class="cast-line">『指定代理人』不是掛個名字就有效,送達與強制力要有配套,否則是空的。</div></div>
+<div class="cast-card" style="--rc:var(--r-ncc)"><div class="cast-role"><span class="cast-name">國家通訊傳播委員會(NCC)</span><span class="cast-tag">政府</span></div><div class="cast-desc">數位中介服務與平台治理的既有管轄者,握有與歐盟 DSA 對接的經驗判斷。</div><div class="cast-line">先分清楚:哪些是『通訊傳播管制』,哪些是『數位市場競爭』,主管權責別打架。</div></div>
+<div class="cast-card" style="--rc:var(--r-platform)"><div class="cast-role"><span class="cast-name">跨境平台在台代表</span><span class="cast-tag">被規範方</span></div><div class="cast-desc">全球平台的在地窗口。全球一致政策難為單一國家客製,審查標準全公開恐被鑽漏洞。</div><div class="cast-line">我們願意配合救濟窗口。但『常駐真人客服團隊』與『審查邏輯全公開』,成本與風險極高。</div></div>
+<div class="cast-card" style="--rc:var(--r-consumer)"><div class="cast-role"><span class="cast-name">數位人權/消費者團體</span><span class="cast-tag">民眾方</span></div><div class="cast-desc">長期倡議用戶救濟權與封帳透明化,代言那些沉默的被誤判者。</div><div class="cast-line">台灣人不該是繳認證稅、卻毫無救濟的數位次等公民。要有真人、要有理由。</div></div>
+<div class="cast-card" style="--rc:var(--r-expert)"><div class="cast-role"><span class="cast-name">資料可攜/資安技術學者</span><span class="cast-tag">學界</span></div><div class="cast-desc">熟悉 GDPR/DMA、去中心化通訊協定(如 ActivityPub)與資料可攜的技術現實。</div><div class="cast-line">四個訴求不是等重的。真人客服是『看得見但最貴』的,資料可攜才是真正的槓桿。</div></div>
+<div class="cast-card new-type" style="--rc:var(--r-facilitator)"><div class="newtype-flag">未被發現的利害關係人</div><div class="cast-role"><span class="cast-name">本土中小型數位平台代表</span><span class="cast-tag">隱藏關鍵</span></div><div class="cast-desc">只要服務到海外用戶,本土 App 也算『跨境數位平台』。一刀切合規門檻恐先壓垮本土隊。</div><div class="cast-line">強制設實體法人、常駐客服團隊、一鍵資料匯出——大巨頭付得起,我十人團隊會直接倒。</div></div>
+<div class="cast-card new-type" style="--rc:var(--r-po)"><div class="newtype-flag">來鬧的干擾者</div><div class="cast-role"><span class="cast-name">主張『全面封鎖外國平台』的網民</span><span class="cast-tag">來鬧的</span></div><div class="cast-desc">把議題導向『外國平台都是境外敵對勢力,應全禁改用國產』的地緣情緒。</div><div class="cast-line">Meta、Google 都在監控台灣人!直接全部封掉、改用我們自己的不就好了?</div></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">03 — 當天劇本</span>
+      <h2 class="section-title">三幕劇:大場討論釐清 → 休息轉折 → 小組共創</h2>
+      <p class="section-lead">劇本依機關的下午半日議程(14:00–17:00)重現。<strong>大場討論</strong>是把「四個訴求」拆開、讓每種處境被聽見(了解人);<strong>休息</strong>是引導師寫下 reframe 的轉折;<strong>小組討論</strong>是 HMW 共創(改變人)。全場關鍵不在情緒高峰,而在 <strong>15:10 學者把訴求排序、15:18 本土新創揭露「一刀切會誤傷本土隊」——那才是決定結論對錯的隱藏轉折</strong>。</p>
+
+      <div class="act am">
+        <div class="act-head">
+          <span class="act-num">ACT I · 14:00 — 15:30</span>
+          <span class="act-title">開場與大場討論｜把「四個訴求」拆開,讓每種處境被聽見</span>
+          <span class="act-purpose">目的:建立全局觀,接住每個角色(對應:開場說明 → 自我介紹 → 部會簡報+QA → 大場討論)</span>
+        </div>
+        <div class="scene"><div class="scene-time">14:00<br><span style="font-size:11px;opacity:.7">開場說明</span></div><div class="scene-body"><span class="narration">引導師在白板寫下四個關鍵字:停權救濟、境內落地、審查透明、資料可攜。先做開放政府與協作會議的簡短說明,定調今天不是表決。</span><div class="dialogue"><span class="speaker">PDIS 引導師</span>「協作會議不是表決大會。在我們辯論『該不該強迫外國平台落地』之前,我想先請大家把這四個訴求後面的『真實處境』攤開——今天要先確認:被誤判的台灣人,現在走投無路的到底是哪一步?」</div></div></div>
+        <div class="scene"><div class="scene-time">14:10<br><span style="font-size:11px;opacity:.7">自我介紹·破冰</span></div><div class="scene-body"><span class="narration">每位與會者用一句話自我介紹:「我是誰、我今天最在意什麼」。提案人、平台在台代表、技術學者,還有一位安靜的本土小平台創辦人,都先露了臉。</span><span class="action">破冰的真正功能,是讓引導師在正式討論前,先確認光譜兩端都有人代言——既有被大平台輾過的個人,也有那個最容易被『打巨頭』政策誤傷、卻最沉默的本土新創。</span></div></div>
+        <div class="scene"><div class="scene-time">14:30<br><span style="font-size:11px;opacity:.7">部會簡報+QA</span></div><div class="scene-body"><span class="narration">數位發展部以現行法制空白與國際比較(歐盟 DSA/DMA、指定代理人制)簡報;法務部在 QA 補充跨境送達與裁罰的現實限制。</span><div class="dialogue"><span class="speaker">數位部 + 法務部</span>數位部:「現行法確實沒有『強制跨境平台落地』的一般性依據,國際上歐盟 DSA 是最完整的參照。」<br>法務部:「重點是<strong>可執行性</strong>——指定代理人要能收受司法文書、承擔裁罰,否則只是形式;而對不在我國的母公司,強制力天生有限。」</div></div></div>
+        <div class="scene"><div class="scene-time">14:50<br><span style="font-size:11px;opacity:.7">大場討論 · 平台方</span></div><div class="scene-body"><span class="narration">平台在台代表先談合規現實。</span><div class="dialogue"><span class="speaker">跨境平台在台代表</span>「救濟窗口我們可以談。但『常駐真人客服團隊』對每個國家都設,成本驚人;而『審查標準細節全公開』——惡意帳號會照著規則鑽,反而傷害多數用戶。」</div></div></div>
+        <div class="scene"><div class="scene-time">15:00<br><span style="font-size:11px;opacity:.7">大場討論 · 人權團體</span></div><div class="scene-body"><span class="narration">數位人權團體接著發言,是全場情緒最高的一段——但仍是論理,而非血淚。</span><div class="dialogue"><span class="speaker">數位人權/消費者團體</span>「你們說成本高,可是被沒收帳號的人,連一個能講話的真人都找不到。這不是客服問題,是<strong>基本救濟權</strong>被跨國巨頭單方剝奪。」</div></div></div>
+        <div class="scene"><div class="scene-time">15:10<br><span style="font-size:11px;opacity:.7">大場討論 · 學者拉回結構</span></div><div class="scene-body"><span class="narration">技術學者把四個訴求排序,是全場第一個關鍵——他把情緒拉回「哪個工具真的有效」。</span><div class="dialogue"><span class="speaker">資料可攜/資安技術學者</span>「四個訴求不是等重的:①實體據點 ②真人客服,是<strong>看得見、但最貴又最沒效率</strong>的;③封帳透明化要小心被鑽漏洞;<strong>④資料可攜與去中心化,才是真正瓦解『數據綁架』的槓桿</strong>——只是它最難、也最需要國際標準對接。別把力氣全押在最有感、卻最沒用的那兩項上。」</div></div></div>
+        <div class="scene keyscene"><div class="scene-time">15:18<br><span style="font-size:11px;opacity:.7">大場討論 · 本土新創【隱藏關鍵】</span></div><div class="scene-body"><span class="key-badge">未被發現的利害關係人 · 決定結論對錯</span><span class="narration">那位安靜的本土小平台創辦人舉手。她的發言,是這場會議最重要的轉折。</span><div class="dialogue"><span class="speaker">本土中小型數位平台代表</span>「我完全支持保護用戶。但請看清楚定義:只要我的 App 有海外使用者,我也是『跨境數位平台』。強制在地法人、常駐客服團隊、一鍵匯出社交關係鏈的工程——<strong>Meta 付這些是零頭,我十人團隊會直接倒</strong>。我們想打的是巨頭,一刀切下去,<strong>第一個死的是本土隊</strong>。」</div><span class="action">這正是刻意設計的關鍵位。若這個聲音缺席,會議會在『打巨頭』的正義感下擺向一刀切,反而扼殺最需要扶植的本土數位產業。讓『未被發現的利害關係人』不只是一張卡,而是決定<strong>結論對錯</strong>的樞紐——分級門檻的想法,就是從這裡長出來的。</span></div></div>
+        <div class="scene"><div class="scene-time">15:25<br><span style="font-size:11px;opacity:.7">大場討論 · 來鬧的【ORID化解】</span></div><div class="scene-body"><span class="narration">一位網民把議題導向地緣情緒。引導師用 ORID 化解,不否定情緒,但把焦點拉回可討論的事實。</span><div class="dialogue"><span class="speaker">主張全面封鎖的網民</span>「Meta、Google 都在監控台灣人!全部封掉、改用國產不就好了?」</div><div class="dialogue"><span class="speaker">PDIS 引導師</span>(O)「你觀察到哪一次具體的停權或誤判,讓你這麼生氣?」(R)「那種被斷聯的無力感我聽到了。」(I)「不過『全面封鎖』會讓今天真正想解決的『救濟窗口』失焦——多數台灣人的生計與社交還在這些平台上。」(D)「要不要我們把你的擔憂,放進『資料可攜、不被單一平台綁架』這條線來談?」</div><span class="action">ORID 的鑑別力在於:把破壞性的地緣宣洩,轉譯回議程上可著力的『降低綁架、提高可攜』,既接住了情緒,又不讓大場討論被劫持。</span></div></div>
+      </div>
+
+      <div class="act br">
+        <div class="act-head">
+          <span class="act-num">ACT II · 15:30 — 15:40</span>
+          <span class="act-title">休息｜轉折:引導師在白板寫下今天的 reframe</span>
+          <span class="act-purpose">目的:把「立場題」翻成「共創題」,並與桌長對齊小組任務</span>
+        </div>
+        <div class="scene"><div class="scene-time">15:30<br><span style="font-size:11px;opacity:.7">休息 · reframe</span></div><div class="scene-body"><span class="narration">十分鐘休息。引導師沒有離場,而是在白板把上半場的爭執收斂成一句新的問題,並快速與各桌桌長對齊。</span><div class="dialogue"><span class="speaker">PDIS 引導師</span>「上半場真正浮現的,不是『該不該逼平台落地』——那是手段層次、又卡在管轄與貿易。真正的題目是:<strong>當台灣人被平台誤判時,如何確保有一條看得到、找得到真人、走得通的救濟路徑,而且不誤傷本土新創。</strong>下半場,我們就照這個問。」</div><span class="action">這個 reframe 是整場會議的核心賭注:把『強制落地』從『目的』還原成『手段之一』,問題就從管轄權的死結,打開成一整排可組合的工具(指定代理人、爭議調處、分級門檻、資料可攜)。</span></div></div>
+      </div>
+
+      <div class="act pm">
+        <div class="act-head">
+          <span class="act-num">ACT III · 15:40 — 17:00</span>
+          <span class="act-title">小組討論與綜合｜HMW 共創 → 他鄉故事 → 收斂三層</span>
+          <span class="act-purpose">目的:從問題躍遷到方案光譜(對應:小組 HMW → 桌上故事卡 → 各組報告 → 主持人統整)</span>
+        </div>
+        <div class="scene"><div class="scene-time">15:40<br><span style="font-size:11px;opacity:.7">小組 HMW</span></div><div class="scene-body"><span class="narration">各桌拿到 reframe 後的四道 HMW 題,開始發想。桌長引導,不記錄小組內部的來回,只收斂出提案。</span><span class="action">四題刻意把『救濟』『不誤傷本土』『透明化防鑽漏洞』『資料可攜』四條線分開,避免大家又把力氣全押在最有感的『真人客服』上。(完整四題見 Page 2)</span></div></div>
+        <div class="scene"><div class="scene-time">16:00<br><span style="font-size:11px;opacity:.7">桌上他鄉故事卡</span></div><div class="scene-body"><span class="narration">每桌發下三張國際案例卡,提供超越『全禁 or 放任』二元的想像。</span><span class="action">歐盟 DSA(境內代理人+申訴+透明化)、歐盟 DMA(資料可攜與互通)、澳洲新聞議價法(用『不談就仲裁』逼平台坐上桌)——三種不同的槓桿,示範『處罰之外,還有更有效的工具』。(完整見 Page 2)</span></div></div>
+        <div class="scene"><div class="scene-time">16:30<br><span style="font-size:11px;opacity:.7">各組報告</span></div><div class="scene-body"><span class="narration">各組回到大場報告,引導師把提案收斂成短/中/長三層,不強求單一結論。</span><div class="dialogue"><span class="speaker">引導師收斂</span>「聽起來大家的方案落在三層:<strong>短期</strong>行政指導+平台自律備查、設緊急救濟窗口;<strong>中期</strong>修法設境內指定代理人與跨境爭議調處,並用<strong>分級門檻</strong>放過本土小平台;<strong>長期</strong>推動資料可攜與去中心化標準對接。」</div></div></div>
+        <div class="scene"><div class="scene-time">16:50<br><span style="font-size:11px;opacity:.7">主持人統整</span></div><div class="scene-body"><span class="narration">引導師做最後統整,把每個原本對立的聲音,收進同一張清單。</span><span class="action">人權團體的『要有真人救濟』、本土新創的『別誤傷小隊』、學者的『資料可攜才是根本』、法務部的『指定代理人要能執行』——被收斂進同一份分層建議裡。沒有人被消音,結論也沒有滑向『全禁』或『一刀切開罰』的民粹解。</span></div></div>
+      </div>
+
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">04 — 服務藍圖</span>
+      <h2 class="section-title">誰在什麼時間做什麼:六個角色 × 下午半日</h2>
+      <p class="section-lead">把當天劇本攤平成服務藍圖,橫軸是機關的 14:00–17:00 議程,縱軸是六個角色。<strong>橘色格</strong>是該時段的關鍵行動(Moment of Truth)——你會看到引導師的關鍵行動集中在 <strong>15:10 訴求排序、15:18 接住本土新創、15:30 reframe</strong> 這三格。</p>
+      <div class="bp-scroll">
+      <table class="bp">
+        <thead><tr>
+          <th>角色 ＼ 時段</th>
+          <th>14:00–14:30<br>開場·破冰</th>
+          <th>14:30–14:50<br>部會簡報+QA</th>
+          <th>14:50–15:30<br>大場討論</th>
+          <th>15:30–15:40<br>休息·轉折</th>
+          <th>15:40–16:30<br>小組 HMW·故事</th>
+          <th>16:30–17:00<br>報告·統整</th>
+        </tr></thead>
+        <tbody>
+          <tr><th><span class="lane-dot" style="background:var(--r-facilitator)"></span>引導師</th>
+            <td>開場定調、寫四關鍵字、確認光譜兩端都有代言</td>
+            <td>控場、引導 QA 聚焦「可執行性」</td>
+            <td class="key">排序四訴求、接住本土新創、ORID 化解來鬧的</td>
+            <td class="key">寫下 reframe、與桌長對齊小組任務</td>
+            <td>巡桌、確保四條線不被單一訴求吃掉</td>
+            <td class="key">收斂短/中/長三層、把對立聲音收進同一清單</td></tr>
+          <tr><th><span class="lane-dot" style="background:var(--r-po)"></span>PO/桌長</th>
+            <td>桌邊迎賓、確認名牌與分組</td>
+            <td>記錄與會者疑問供 QA</td>
+            <td>觀察情緒、標記待深談議題</td>
+            <td>接收 reframe、準備 HMW 引導</td>
+            <td class="key">引導小組發想、只收斂提案不記錄來回</td>
+            <td>彙整小組海報、協助報告</td></tr>
+          <tr><th><span class="lane-dot" style="background:var(--r-moda)"></span>數位發展部</th>
+            <td>出席、致意</td>
+            <td class="key">簡報法制空白+國際比較(DSA/DMA)</td>
+            <td>回應可行性、聆聽各方</td>
+            <td>—</td>
+            <td>桌邊備詢</td>
+            <td class="key">承接建議、說明後續研擬方向</td></tr>
+          <tr><th><span class="lane-dot" style="background:var(--r-legal)"></span>法務部/NCC</th>
+            <td>出席</td>
+            <td class="key">補充跨境送達、裁罰效力、管轄權界線</td>
+            <td>釐清指定代理人法律定位</td>
+            <td>—</td>
+            <td>桌邊備詢(法制可行性)</td>
+            <td>確認建議的法律可行性</td></tr>
+          <tr><th><span class="lane-dot" style="background:var(--r-consumer)"></span>提案人/民間</th>
+            <td>自我介紹、露臉</td>
+            <td>聆聽、提問</td>
+            <td class="key">人權團體陳述救濟權、平台方陳述合規現實</td>
+            <td>休息交流</td>
+            <td>入組共創</td>
+            <td>聆聽收斂結果</td></tr>
+          <tr><th><span class="lane-dot" style="background:var(--r-facilitator)"></span>本土新創(隱藏)</th>
+            <td>安靜露臉(易被忽略)</td>
+            <td>聆聽</td>
+            <td class="key">揭露一刀切誤傷本土隊 → 催生分級門檻</td>
+            <td>—</td>
+            <td>入組、把「分級」帶進方案</td>
+            <td>確認建議未誤傷本土</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="mot-summary">
+        <div class="mot-card"><div class="mot-time">15:10 · 大場討論</div><div class="mot-t">學者把四訴求排序</div><div class="mot-d">把情緒從「最有感的真人客服」拉回「最有效的資料可攜」,替下半場定錨正確的施力點。</div></div>
+        <div class="mot-card"><div class="mot-time">15:18 · 隱藏關鍵</div><div class="mot-t">本土新創揭露誤傷風險</div><div class="mot-d">若缺席,會議會在「打巨頭」正義感下擺向一刀切。這一格決定結論對錯,分級門檻由此而生。</div></div>
+        <div class="mot-card"><div class="mot-time">15:30 · 休息轉折</div><div class="mot-t">引導師寫下 reframe</div><div class="mot-d">把「該不該逼平台落地」翻成「如何讓被誤判者有救濟、資料帶得走、又不誤傷本土」,打開整排工具。</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="page" id="page-2">
+  <section>
+    <div class="wrap">
+      <span class="section-tag">05 — 全局觀</span>
+      <h2 class="section-title">六視角矩陣:確保沒有一種「聽得懂的世界」被遺漏</h2>
+      <p class="section-lead">這題的高認知門檻,意味著<strong>很容易只聽得懂其中一種語言</strong>——只聽人權團體的委屈、或只聽平台方的成本。六視角沿縱軸(個人→系統→制度)與橫軸(理性結構 vs 經驗真實)鋪開,強迫會議同時容納「被誤判者的處境」與「跨境法制的結構」。</p>
+      <div class="matrix">
+<div class="persp"><div class="persp-axis">個人經驗 · <b>經驗真實</b></div><div class="persp-t">用戶救濟與數位人權觀點</div><div class="persp-d">被演算法誤判、只收到罐頭信的當事人處境——救濟權是不是被跨國巨頭單方剝奪?這是議題的體溫。</div></div>
+<div class="persp"><div class="persp-axis">系統執行 · <b>理性結構</b></div><div class="persp-t">平台治理與內容審查觀點</div><div class="persp-d">演算法審查的規模與極限:全公開會被鑽漏洞、全人工不可行。透明化到什麼程度才是有效而非表演?</div></div>
+<div class="persp"><div class="persp-axis">制度頂層 · <b>理性結構</b></div><div class="persp-t">跨境法律管轄與送達觀點</div><div class="persp-d">指定代理人能否真正收受司法文書、承擔裁罰?對不在我國的母公司,強制力的邊界在哪?</div></div>
+<div class="persp"><div class="persp-axis">制度頂層 · <b>經驗真實</b></div><div class="persp-t">國際數位法制比較觀點</div><div class="persp-d">歐盟 DSA/DMA、澳洲議價法的實證經驗——哪些工具真的讓平台坐上桌?哪些淪為紙上義務?</div></div>
+<div class="persp"><div class="persp-axis">系統執行 · <b>經驗真實</b></div><div class="persp-t">本土數位產業衝擊觀點</div><div class="persp-d">一刀切合規門檻對十人新創是滅頂之災。分級與豁免,是讓政策打得到巨頭、又不誤傷本土的關鍵。</div></div>
+<div class="persp"><div class="persp-axis">個人→系統 · <b>理性結構</b></div><div class="persp-t">資料可攜與去中心化技術觀點</div><div class="persp-d">一鍵匯出社交關係鏈、對接去中心化標準的技術現實與成本——這是瓦解「數據綁架」的根本槓桿,也最難。</div></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">06 — 中場的那一筆</span>
+      <h2 class="section-title">reframe:整場會議的核心賭注</h2>
+      <p class="section-lead">協作會議最關鍵的產出,往往是休息時白板上的那一句。它把一個卡死在管轄與貿易的<strong>立場題</strong>,翻成一個下半場能真正共創的<strong>方向題</strong>。</p>
+      <div class="reframe">
+        <div class="rf-box rf-from">
+          <div class="rf-label">上半場的問題(手段·立場題)</div>
+          <div class="rf-q">「該不該強制外國平台<br>在台灣設實體據點與法定代理人?」</div>
+          <div class="rf-note">卡點:這是 yes/no,而且答案受制於跨境管轄與數位貿易協定——很容易滑進「反正管不到」的無力,或「乾脆全禁」的民粹。</div>
+        </div>
+        <div class="rf-arrow">→</div>
+        <div class="rf-box rf-to">
+          <div class="rf-label">下半場的問題(目的·方向題)</div>
+          <div class="rf-q">「如何讓被平台誤判的台灣人,<br>有真人可申訴、資料帶得走,<br>又不誤傷本土新創?」</div>
+          <div class="rf-note">打開:把「落地」從目的還原成手段之一,問題就展開成一整排可組合的工具——指定代理人、爭議調處、分級門檻、資料可攜與去中心化。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">07 — 共創的施力點</span>
+      <h2 class="section-title">四道 HMW:把 reframe 拆成能發想的方向</h2>
+      <p class="section-lead">四題刻意把不同施力點分開,避免大家又把力氣全押在最有感、卻最沒效率的「真人客服」上。</p>
+      <div class="hmw-grid">
+<div class="hmw"><div class="hmw-n">HMW 1</div><div class="hmw-q">我們如何讓遭平台誤判停權的台灣人,在一定時間內找到一個<b>「找得到、答得出理由」</b>的救濟窗口?</div></div>
+<div class="hmw"><div class="hmw-n">HMW 2</div><div class="hmw-q">我們如何要求跨境平台落地負責的同時,用<b>分級門檻</b>不讓合規成本壓垮本土新創與小型平台?</div></div>
+<div class="hmw"><div class="hmw-n">HMW 3</div><div class="hmw-q">我們如何讓「封帳理由透明化」<b>既保障用戶、又不被惡意者鑽漏洞</b>規避審查?</div></div>
+<div class="hmw"><div class="hmw-n">HMW 4</div><div class="hmw-q">我們如何讓台灣人的社交關係與數位資產<b>「帶得走」</b>,推動與國際去中心化標準接軌?</div></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">08 — 他鄉的故事</span>
+      <h2 class="section-title">三張國際案例卡:處罰與全禁之外的第三條路</h2>
+      <p class="section-lead">桌上故事卡的功能,是把想像力從「本地二元框架」拉出來。這三個案例分別示範了三種不同的槓桿。</p>
+      <div class="story-grid">
+<div class="story"><div class="story-flag">歐盟 · DSA</div><div class="story-t">《數位服務法》</div><div class="story-d">要求大型平台指定境內法定代理人、設內部申訴、發布透明化報告,並提供庭外爭議解決機制。示範了「救濟+透明化」如何被制度化,以及分級(超大型平台義務較重)如何避免誤傷小平台。</div></div>
+<div class="story"><div class="story-flag">歐盟 · DMA</div><div class="story-t">《數位市場法》</div><div class="story-d">對「守門人」平台課予資料可攜與互通義務,讓用戶能把資料與關係帶走。示範了提案第四點『數位遷徙自由』如何從口號變成可執行的法律義務。</div></div>
+<div class="story"><div class="story-flag">澳洲 · 議價法</div><div class="story-t">《新聞媒體議價法》</div><div class="story-d">以「不談就強制仲裁」的法律槓桿,逼原本不受管轄的跨國平台坐上談判桌。示範了面對「管不到的巨頭」時,如何用制度設計創造談判籌碼,而非直接封鎖。</div></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="section-tag">09 — 為什麼這結構有效</span>
+      <h2 class="section-title">這不只是會議流程,是一套「不被認知門檻擊敗」的設計</h2>
+      <p class="section-lead">高認知門檻的題目最大的風險,是<strong>會議滑向少數聽得懂的人壟斷、或多數聽不懂的人被最有感的口號帶走</strong>。這套結構的四個價值,正是為了防這件事。</p>
+      <div class="why-grid">
+<div class="why-item"><div class="why-num">01</div><div class="why-title">全局觀:沒有遺漏的視角</div><div class="why-desc">六視角同時容納「被誤判者的委屈」與「跨境法制的結構」,確保會議不會只聽打巨頭的爽感,也聽見本土新創的誤傷風險。</div></div>
+<div class="why-item"><div class="why-num">02</div><div class="why-title">接住每個角色:技術理性與委屈都有位子</div><div class="why-desc">被沒收帳號的痛、平台方的合規成本、學者的技術判斷、本土新創的存亡——每一種都有專屬卡位,沒有一種語言壓過另一種。</div></div>
+<div class="why-item"><div class="why-num">03</div><div class="why-title">重新定義題目:跳出管轄死結</div><div class="why-desc">把「該不該逼平台落地」(卡在管轄與貿易的 yes/no)翻成「如何讓被誤判者有救濟、資料帶得走、又不誤傷本土」,下半場才有真正的空間。</div></div>
+<div class="why-item"><div class="why-num">04</div><div class="why-title">HMW + 他鄉故事:從口號到工具光譜</div><div class="why-desc">DSA/DMA/澳洲法提供超越「全禁 or 放任」的第三條路,讓產出不是情緒表態,而是短/中/長三層、可分級執行的工具組合。</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <div>
+    <div class="ft-brand">協作會議結構提案 · 跨境平台落地案</div>
+    <div style="margin-top:8px; color:rgba(255,255,255,0.6); font-size:13px;">
+      Page 1 · 當天現場(依機關 14:00–17:00 議程 + 難度雷達 + 服務藍圖)　·　Page 2 · 結構方法論
+    </div>
+  </div>
+  <div class="ft-meta">
+    提案文件 · 給國家發展委員會<br>
+    Case Study · 跨境平台設實體據點/指定代理人/真人客服申訴(★★★ 資深 PO 示範題)<br>
+    Method · 了解人 → 改變人
+  </div>
+</div></footer>
+
+<script>
+  function goToPage(n){
+    document.querySelectorAll('.page-tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.page-tabs button[data-page="'+n+'"]').classList.add('active');
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+n).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.page-tabs button').forEach(btn=>{
+    btn.addEventListener('click',()=>goToPage(btn.dataset.page));
+  });
+</script>
+
+</body>
+</html>
