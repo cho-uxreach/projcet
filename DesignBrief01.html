@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Brief · 見識謀斷範例｜桃園卡首頁改版</title>
+<style>
+  :root {
+    --pink-50:  #FFF5F7;
+    --pink-100: #FFE8EE;
+    --pink-200: #FFD1DB;
+    --pink-300: #FFB0BF;
+    --pink-400: #FF8B9C;
+    --pink-500: #F77789;
+    --pink-600: #E94560;
+    --pink-700: #D02A47;
+
+    --ink-900: #1A1A1F;
+    --ink-700: #3A3A42;
+    --ink-500: #6B6B75;
+    --ink-300: #A8A8B0;
+    --ink-100: #E6E6EA;
+    --ink-50:  #F4F4F7;
+
+    --sage:      #7EB09F;
+    --sage-bg:   #E6F3EC;
+    --sky:       #5B9BD5;
+    --sky-bg:    #E6F0F9;
+    --gold:      #E8A63C;
+    --gold-bg:   #FDF3DD;
+
+    --font-serif: "Noto Serif TC", "Songti TC", "PingFang TC", serif;
+    --font-sans: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #F3F3F5;
+    color: var(--ink-900);
+    font-family: var(--font-sans);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 20px;
+  }
+
+  .paper {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 64px 60px 80px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.06);
+    border-radius: 10px;
+  }
+
+  /* ===== Header ===== */
+  .doc-header {
+    padding-bottom: 32px;
+    border-bottom: 3px solid var(--pink-primary);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .doc-header::before {
+    content: "";
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 60px; height: 3px;
+    background: var(--pink-600);
+  }
+  .doc-header .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    color: var(--pink-600);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .doc-header h1 {
+    margin: 0 0 8px;
+    font-family: var(--font-serif);
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .doc-header .subtitle {
+    font-size: 16px;
+    color: var(--ink-500);
+    margin-bottom: 18px;
+  }
+  .doc-header .meta {
+    display: flex; gap: 22px; font-size: 13px; color: var(--ink-500);
+    flex-wrap: wrap;
+  }
+  .doc-header .meta span::before {
+    content: "";
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--pink-500);
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  /* ===== Framework intro ===== */
+  .framework-intro {
+    padding: 22px 28px;
+    background: linear-gradient(135deg, var(--pink-50) 0%, #fff 100%);
+    border: 1px solid var(--pink-200);
+    border-radius: 14px;
+    margin-bottom: 44px;
+  }
+  .framework-intro .fi-title {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink-900);
+    margin-bottom: 14px;
+  }
+  .framework-intro .fi-pair {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .framework-intro .fi-item {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .framework-intro .fi-item .chars {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--pink-600);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .framework-intro .fi-item .desc {
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+  .framework-intro .fi-item .desc b {
+    color: var(--ink-900);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ===== Section ===== */
+  .section {
+    margin-bottom: 52px;
+  }
+  .section-head {
+    display: flex; align-items: flex-start; gap: 18px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--ink-100);
+  }
+  .section-num {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 900;
+    flex-shrink: 0;
+    box-shadow: 0 8px 18px rgba(233,69,96,0.25);
+  }
+  .section-head h2 {
+    margin: 0 0 4px;
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  .section-head h2 .verb {
+    color: var(--pink-600);
+  }
+  .section-head .sub {
+    font-size: 14px;
+    color: var(--ink-500);
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+
+  /* ===== Subsection ===== */
+  .sub-block {
+    margin-bottom: 22px;
+  }
+  .sub-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink-900);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--pink-500);
+    letter-spacing: -0.01em;
+  }
+
+  /* ===== Fields ===== */
+  .fields {
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .field {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--ink-50);
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  .field .k {
+    color: var(--pink-700);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .field .v {
+    color: var(--ink-700);
+    line-height: 1.7;
+  }
+  .field .v strong { color: var(--ink-900); font-weight: 700; }
+  .field .v em {
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 60%, var(--pink-100) 60%);
+    padding: 0 3px;
+    font-weight: 600;
+  }
+  .field .v ul {
+    margin: 4px 0 0; padding-left: 20px;
+  }
+  .field .v ul li { margin: 3px 0; }
+
+  /* ===== A → B visualization ===== */
+  .abb-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 6px;
+    align-items: stretch;
+    margin: 12px 0 4px;
+  }
+  .abb-card {
+    background: #fff;
+    border: 2px solid var(--ink-100);
+    border-radius: 14px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .abb-card.a { border-color: var(--sky); background: linear-gradient(180deg, var(--sky-bg), #fff); }
+  .abb-card.method { border-color: var(--gold); background: linear-gradient(180deg, var(--gold-bg), #fff); }
+  .abb-card.b { border-color: var(--sage); background: linear-gradient(180deg, var(--sage-bg), #fff); }
+  .abb-card .lbl {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .abb-card.a .lbl { background: var(--sky); color: #fff; }
+  .abb-card.method .lbl { background: var(--gold); color: #fff; }
+  .abb-card.b .lbl { background: var(--sage); color: #fff; }
+  .abb-card .role {
+    font-size: 11px;
+    color: var(--ink-500);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .abb-card .content {
+    font-size: 12.5px;
+    color: var(--ink-700);
+    line-height: 1.6;
+  }
+  .abb-card .content ul {
+    margin: 4px 0 0; padding-left: 16px;
+  }
+  .abb-card .content li { margin: 2px 0; }
+  .abb-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--pink-500);
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  @media (max-width: 720px) {
+    .abb-grid {
+      grid-template-columns: 1fr;
+    }
+    .abb-arrow {
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ===== Reference & Boundary blocks ===== */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  @media (max-width: 720px) {
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+  .ref-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid;
+  }
+  .ref-card.learn {
+    background: linear-gradient(180deg, var(--sage-bg), #fff);
+    border-color: var(--sage);
+  }
+  .ref-card.avoid {
+    background: linear-gradient(180deg, var(--gold-bg), #fff);
+    border-color: var(--gold);
+  }
+  .ref-card.no {
+    background: linear-gradient(180deg, #FFEEE8, #fff);
+    border-color: #E5624F;
+  }
+  .ref-card .rt {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ref-card.learn .rt { color: #1F7A4E; }
+  .ref-card.avoid .rt { color: #B5790C; }
+  .ref-card.no .rt { color: #B02F1A; }
+  .ref-card .rt::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+  .ref-card ul {
+    margin: 0; padding-left: 18px;
+    font-size: 13px;
+    color: var(--ink-700);
+    line-height: 1.7;
+  }
+  .ref-card ul li { margin: 3px 0; }
+
+  /* ===== 心法 callout ===== */
+  .mindset {
+    margin-top: 18px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--pink-50), transparent);
+    border-left: 4px solid var(--pink-500);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink-700);
+    font-style: italic;
+  }
+  .mindset::before {
+    content: "心法 · ";
+    font-style: normal;
+    color: var(--pink-700);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .mindset b {
+    color: var(--pink-700);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* ===== Success + Delivery boxes ===== */
+  .success-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .metric-box {
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid;
+  }
+  .metric-box.primary {
+    background: linear-gradient(90deg, var(--pink-50), #fff);
+    border-color: var(--pink-300);
+  }
+  .metric-box.secondary {
+    background: var(--ink-50);
+    border-color: var(--ink-100);
+  }
+  .metric-box .mt {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .metric-box.primary .mt { color: var(--pink-700); }
+  .metric-box.secondary .mt { color: var(--ink-500); }
+  .metric-box .mc {
+    font-size: 14px;
+    color: var(--ink-700);
+    line-height: 1.7;
+  }
+  .metric-box .mc ul {
+    margin: 4px 0 0; padding-left: 20px;
+  }
+  .metric-box .mc strong { color: var(--ink-900); font-weight: 700; }
+
+  /* ===== Self-check ===== */
+  .self-check {
+    margin-top: 48px;
+    padding: 24px 28px;
+    background: var(--ink-50);
+    border-radius: 14px;
+    border: 1px solid var(--ink-100);
+  }
+  .self-check h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink-900);
+  }
+  .self-check ol {
+    padding-left: 22px;
+    margin: 0;
+  }
+  .self-check ol li {
+    margin: 8px 0;
+    font-size: 13.5px;
+    color: var(--ink-700);
+    line-height: 1.7;
+  }
+  .self-check ol li strong { color: var(--ink-900); font-weight: 700; }
+  .self-check ol li .verdict {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 11px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--sage);
+    color: #fff;
+    font-weight: 700;
+    vertical-align: 1px;
+  }
+
+  /* ===== Checklist ===== */
+  .checklist {
+    margin-top: 28px;
+  }
+  .checklist h3 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink-900);
+    margin-bottom: 14px;
+  }
+  .checklist ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  @media (max-width: 720px) {
+    .checklist ul { grid-template-columns: 1fr; }
+  }
+  .checklist li {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--ink-700);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .checklist li::before {
+    content: "✓";
+    color: var(--sage);
+    font-weight: 900;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink-100);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-500);
+  }
+  .footer .signature {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--ink-900);
+    font-size: 14px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 720px) {
+    body { padding: 20px 12px; }
+    .paper { padding: 36px 24px 48px; }
+    .doc-header h1 { font-size: 24px; }
+    .section-num { width: 46px; height: 46px; font-size: 22px; }
+    .section-head h2 { font-size: 20px; }
+    .field { grid-template-columns: 1fr; gap: 4px; padding: 12px 14px; }
+    .framework-intro .fi-pair { grid-template-columns: 1fr; }
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    body { background: #fff; padding: 0; }
+    .paper { box-shadow: none; max-width: 100%; padding: 30px 24px; border-radius: 0; }
+    .section { break-inside: avoid; page-break-inside: avoid; }
+    .mindset { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+  <header class="doc-header">
+    <div class="eyebrow">DESIGN BRIEF · 見識謀斷範例</div>
+    <h1>桃園卡首頁改版</h1>
+    <div class="subtitle">依「見識謀斷」四段框架填入的完整案例・給團隊訓練與參考用</div>
+    <div class="meta">
+      <span>負責：致遠</span>
+      <span>對象：桃園市政府主委</span>
+      <span>版本：v1</span>
+      <span>時程：1 週</span>
+    </div>
+  </header>
+
+  <!-- ===== Framework intro ===== -->
+  <div class="framework-intro">
+    <div class="fi-title">為什麼是「見識謀斷」</div>
+    <div class="fi-pair">
+      <div class="fi-item">
+        <div class="chars">見識</div>
+        <div class="desc">
+          <b>解問題</b>
+          先看清楚現況，再讀懂問題本質。沒見識，就沒有可談的命題。
+        </div>
+      </div>
+      <div class="fi-item">
+        <div class="chars">謀斷</div>
+        <div class="desc">
+          <b>定成果</b>
+          規劃從 A 到 B 的路徑，再斷定成功標準與交付邊界。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 一、見 · 看見現況 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">見</div>
+      <div>
+        <h2>一、<span class="verb">看見</span>現況</h2>
+        <div class="sub">不下判斷，先把現實攤在同一張桌子上。</div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">看見使用者</div>
+      <div class="fields">
+        <div class="field">
+          <div class="k">是誰</div>
+          <div class="v">
+            <ul>
+              <li><strong>主要決策者</strong>：主委、市議員、市府主管（他們看未登入首頁做判斷）</li>
+              <li><strong>次要使用者</strong>：不知道桃園卡的桃園市民（下載但未註冊）</li>
+              <li><strong>已使用者</strong>：35 萬桃園數位市民（本次不是首要對象）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">在幹嘛</div>
+          <div class="v">
+            議員在議會質詢時檢視首屏；主委看首屏截圖判斷是否過關；市民打開 APP 看 <em>5 秒</em>決定要不要繼續。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">卡在哪</div>
+          <div class="v">
+            <ul>
+              <li><strong>議員</strong>：「不知道 APP 有什麼功能」</li>
+              <li><strong>主委</strong>：「第一屏太空」「分眾服務要被看見」</li>
+              <li><strong>市民</strong>：看不出價值就關掉，沒註冊、沒回訪</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">看見品牌</div>
+      <div class="fields">
+        <div class="field">
+          <div class="k">品牌現況</div>
+          <div class="v">
+            桃園卡運行 5 年，35 萬數位市民、3,000+ 特店、12 圖書館。主色<em>粉紅系（#F77789 / #E94560）</em>。桃園市長有「科技市長」稱號，但 APP 沒有明確 voice & tone。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">前情提要</div>
+          <div class="v">
+            上一版曾以「<strong>生活化</strong>」為方向提案，主委與議員都不買單——但沒拿到明確 verbatim（訊息是工程轉達的）。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">相關人</div>
+          <div class="v">
+            決策鏈：設計團隊 → 顧問 review → 主委簡報 → 對議會說明。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindset">見寫不好、識就會亂。<b>先具體、後判斷</b>。</div>
+  </section>
+
+  <!-- ============ 二、識 · 讀懂問題 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">識</div>
+      <div>
+        <h2>二、<span class="verb">讀懂</span>問題</h2>
+        <div class="sub">從「看到」到「懂了」，把現象翻譯成命題。</div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">讀懂核心問題</div>
+      <div class="fields">
+        <div class="field">
+          <div class="k">一句話說清</div>
+          <div class="v">
+            <strong>未登入首頁沒有「服務被感受到」</strong>——決策者看不到有做事、市民看不到與我有關。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">為什麼現在</div>
+          <div class="v">
+            議員質詢已在議會提出，主委要求改版；不做，下一次議會質詢會更難堪。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">上次失敗診斷</div>
+          <div class="v">
+            上一版走「生活化」被打回。可能根因：
+            <ul>
+              <li>(A) 生活化本身不對</li>
+              <li>(B) 生活化沒翻譯成市府施政語言</li>
+              <li>(C) 視覺讓服務含量不被感受到</li>
+            </ul>
+            <em>我方判斷偏向 (B) + (C)</em>，因此不放棄「有溫度」，但要把服務露出來。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">讀懂受眾關係</div>
+      <div class="fields">
+        <div class="field">
+          <div class="k">主要使用者</div>
+          <div class="v">
+            <strong>決策者（主委、議員）</strong>——這次目標是 Policy Win，主結構必須先服務他們。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">次要使用者</div>
+          <div class="v">
+            未登入市民——不能被排斥，最好能夠註冊。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">衝突時聽誰</div>
+          <div class="v">
+            <strong>聽主委</strong>——但保留民眾溫度為底線，不做出「政府儀表板冷專業」的極端方向。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindset">識是最難的一段。<b>寫不出識、代表見還沒到位</b>。</div>
+  </section>
+
+  <!-- ============ 三、謀 · 佈局手法 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">謀</div>
+      <div>
+        <h2>三、<span class="verb">佈局</span>手法</h2>
+        <div class="sub">從 A 到 B 怎麼走，畫出路徑與紅線。</div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">佈局 A → B 路徑</div>
+
+      <div class="abb-grid">
+        <div class="abb-card a">
+          <span class="lbl">A · 起點</span>
+          <div class="role">使用者的現狀（具體且深刻）</div>
+          <div class="content">
+            <ul>
+              <li>首頁 9 區、近半是宣傳與註冊 CTA</li>
+              <li>真實服務被淹沒在廣告文案裡</li>
+              <li>分眾服務只有 2 群可用</li>
+              <li>內容供給不穩定（Banner 品質不可控）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="abb-arrow">→</div>
+        <div class="abb-card method">
+          <span class="lbl">→ · 手法</span>
+          <div class="role">品牌要運用的策略</div>
+          <div class="content">
+            <ul>
+              <li>保守重排：9 區全保留</li>
+              <li>「權益可享」升級為 Hero + 具體證據</li>
+              <li>「找到適合服務」拉上 + 插畫替 emoji</li>
+              <li>活動特店拉上、Banner 下沉</li>
+              <li>不動內容盤、不動工程</li>
+            </ul>
+          </div>
+        </div>
+        <div class="abb-arrow">→</div>
+        <div class="abb-card b">
+          <span class="lbl">B · 終點</span>
+          <div class="role">預期到達的狀態</div>
+          <div class="content">
+            <ul>
+              <li>5 秒內看出全局服務價值</li>
+              <li>一張截圖能結束議員質詢</li>
+              <li>三層結構：說服區 → 日常區 → 轉換區</li>
+              <li>粉色 DNA 沒被打破</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">佈局參考與邊界</div>
+
+      <div class="ref-grid">
+        <div class="ref-card learn">
+          <div class="rt">想學這些</div>
+          <ul>
+            <li><strong>Revolut</strong>：雙層 Hero + 探索</li>
+            <li><strong>支付寶生活號</strong>：分眾服務市集</li>
+            <li><strong>LINE Bank TW</strong>：插畫敘事</li>
+            <li><strong>Klarna</strong>：粉色專業感</li>
+          </ul>
+        </div>
+        <div class="ref-card avoid">
+          <div class="rt">不想走這裡</div>
+          <ul>
+            <li><strong>Cash App 極簡</strong>：離桃園卡太遠</li>
+            <li><strong>純政府儀表板冷專業</strong>：失去粉色 DNA</li>
+            <li><strong>把首頁塞滿廣告</strong>：現況就是這樣被打槍</li>
+          </ul>
+        </div>
+        <div class="ref-card no">
+          <div class="rt">不可跨越</div>
+          <ul>
+            <li>粉色系 <span style="font-family:var(--font-mono)">#F77789 / #E94560</span></li>
+            <li>不改工程、不動 API</li>
+            <li>不加新功能、不新資料</li>
+            <li>不虛構未存在數據</li>
+            <li>1 週時程</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindset">謀要開放。<b>設計師的判斷力在這裡發揮，不要一次講死</b>。</div>
+  </section>
+
+  <!-- ============ 四、斷 · 定義成果 ============ -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">斷</div>
+      <div>
+        <h2>四、<span class="verb">定義</span>成果</h2>
+        <div class="sub">什麼叫「做完了」、什麼叫「做成了」。</div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">定義成功標準</div>
+      <div class="success-grid">
+        <div class="metric-box primary">
+          <div class="mt">首要指標 · POLICY WIN</div>
+          <div class="mc">
+            顧問 review 通過（1-2 輪內）、主委簡報通過、開啟改版路線。
+          </div>
+        </div>
+        <div class="metric-box secondary">
+          <div class="mt">次要指標 · PRODUCT METRIC（交付後追蹤）</div>
+          <div class="mc">
+            <ul>
+              <li>5-second test 服務類別回想率提升 <strong>≥ 50%</strong></li>
+              <li>未登入首頁停留時間 median <strong>≥ 1.5x</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="metric-box secondary">
+          <div class="mt">BASELINE 建立方式</div>
+          <div class="mc">
+            現況無 baseline。建議先做 <strong>5-15 位不熟桃園卡市民的 5-second test</strong>，一個下午完成，同時建立數字與 verbatim（verbatim 也是說服主委的證據）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-block">
+      <div class="sub-title">定義交付邊界</div>
+      <div class="fields">
+        <div class="field">
+          <div class="k">交付物</div>
+          <div class="v">
+            <ul>
+              <li><strong>顧問版設計說明</strong>（10-20 頁）：完整設計文件 + Q1-Q3 判斷 + 視覺稿 + moodboard + trade-off</li>
+              <li><strong>主委版 3 頁簡報</strong>：一句話結論 + 解決什麼問題（引用主委原話） + 三個方案差異</li>
+            </ul>
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">時程</div>
+          <div class="v">
+            1 週產出顧問版；顧問 review 後 3 天內產主委版。
+          </div>
+        </div>
+        <div class="field">
+          <div class="k">修改流程</div>
+          <div class="v">
+            顧問 <strong>1-2 輪</strong> review 完成；主委簡報一次到位（若被打回，回頭修顧問版再上）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mindset">斷要明確。<b>成功標準模糊，交付會走鐘</b>。</div>
+  </section>
+
+  <!-- ============ Self-check ============ -->
+  <div class="self-check">
+    <h3>撰寫者自檢五問（此案的檢核結果）</h3>
+    <ol>
+      <li><strong>「識」有沒有超過三行？</strong>沒超過三行，但每行都指向具體命題與診斷。<span class="verdict">通過</span></li>
+      <li><strong>「A → B」中的「→」有沒有具體？</strong>手法列了 5 條具體動作（保守重排、Hero 升級、拉上分眾、Banner 下沉、不動內容盤）。<span class="verdict">通過</span></li>
+      <li><strong>「不可跨越」有沒有寫？</strong>寫了 5 條硬限制（粉色系、不改工程、不加新功能、不虛構數據、1 週）。<span class="verdict">通過</span></li>
+      <li><strong>「首要指標」是一個還是多個？</strong>只有一個：Policy Win（顧問通過 + 主委通過）。<span class="verdict">通過</span></li>
+      <li><strong>每段是否控制在 5-7 條內？</strong>每個子區塊都在 3-5 條範圍。<span class="verdict">通過</span></li>
+    </ol>
+  </div>
+
+  <!-- ============ Checklist ============ -->
+  <div class="checklist">
+    <h3>交付前檢核清單</h3>
+    <ul>
+      <li>一句話說出這次要解決什麼問題</li>
+      <li>使用者是誰、卡在哪</li>
+      <li>品牌現況與上次類似專案結果</li>
+      <li>主要 audience 是誰、衝突時聽誰</li>
+      <li>從 A 到 B 的具體手法方向</li>
+      <li>想學什麼、不想走什麼、不可跨越什麼</li>
+      <li>一個首要成敗指標</li>
+      <li>交付物、時程、修改流程</li>
+    </ul>
+  </div>
+
+  <!-- ============ Footer ============ -->
+  <div class="footer">
+    <div>Design Brief 模板 · v1 · 見識謀斷框架</div>
+    <div class="signature">— 致遠</div>
+  </div>
+
+</div>
+
+</body>
+</html>
