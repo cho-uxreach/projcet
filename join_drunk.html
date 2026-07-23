@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>協作會議提案|當天現場 × 結構方法論</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 上午:了解人 */
+    --morning-ink:      #1B2A4E;
+    --morning-primary:  #2C3E66;
+    --morning-accent:   #4A7BC9;
+    --morning-soft:     #E8EEF7;
+    --morning-bg:       #F4F6FB;
+
+    /* 下午:改變人 */
+    --afternoon-ink:    #5C1F0F;
+    --afternoon-primary:#A03A24;
+    --afternoon-accent: #D89B3F;
+    --afternoon-soft:   #FBEEDA;
+    --afternoon-bg:     #FCF6EC;
+
+    /* 通用 */
+    --ink:        #14172B;
+    --text:       #2D3142;
+    --text-mute:  #6B7280;
+    --line:       #DFE3EC;
+    --paper:      #FFFFFF;
+    --bg:         #FAFBFD;
+    --night:      #0F1320;
+
+    /* 角色配色 */
+    --r-citizen:   #D14F3C;
+    --r-expert:    #2C3E66;
+    --r-victim:    #8A5A3B;
+    --r-facilitator: #1F7A5C;
+    --r-po:        #6C4B8E;
+    --r-ndc:       #1B2A4E;
+
+    --serif: 'Noto Serif TC', 'Source Han Serif TC', serif;
+    --sans:  'Noto Sans TC', 'PingFang TC', sans-serif;
+    --mono:  'JetBrains Mono', monospace;
+
+    --r-s: 6px; --r-m: 12px; --r-l: 20px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============================================
+     頂部分頁導航
+     ============================================ */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--ink); letter-spacing: -0.01em;
+  }
+  .brand-tag {
+    display: inline-block; margin-left: 10px;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; color: var(--text-mute);
+    padding: 2px 8px; border: 1px solid var(--line);
+    border-radius: 100px; text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .page-tabs {
+    display: flex; gap: 4px; background: var(--bg);
+    padding: 4px; border-radius: 100px;
+    border: 1px solid var(--line);
+  }
+  .page-tabs button {
+    border: 0; background: transparent;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    color: var(--text-mute);
+    padding: 8px 18px; border-radius: 100px;
+    cursor: pointer; transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+  }
+  .page-tabs button:hover { color: var(--ink); }
+  .page-tabs button.active {
+    background: var(--ink); color: white;
+  }
+  .page-tabs button .ord {
+    font-family: var(--mono); font-size: 11px;
+    margin-right: 6px; opacity: 0.7;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: pageIn 0.4s ease both; }
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================
+     共用 layout
+     ============================================ */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .section { padding: 88px 0; position: relative; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-mute);
+    margin-bottom: 20px;
+  }
+  .section-tag::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .section-title {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2; color: var(--ink);
+    margin-bottom: 18px; letter-spacing: -0.01em;
+  }
+  .section-lead {
+    font-size: 17px; line-height: 1.75; color: var(--text);
+    max-width: 780px; margin-bottom: 48px;
+  }
+
+  /* ============================================
+     PAGE 1 — Hero
+     ============================================ */
+  .p1-hero {
+    background:
+      radial-gradient(circle at 15% 30%, rgba(74,123,201,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 85% 70%, rgba(216,155,63,0.10) 0%, transparent 45%),
+      linear-gradient(180deg, #F4F6FB 0%, #FCF6EC 100%);
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .p1-meta {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.15em; color: var(--text-mute);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .p1-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--afternoon-primary); animation: blink 2s ease infinite; }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .p1-date {
+    font-family: var(--serif); font-size: clamp(20px, 2.6vw, 28px);
+    color: var(--morning-accent); font-weight: 500;
+    margin-bottom: 8px; letter-spacing: 0.02em;
+  }
+  .p1-headline {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(36px, 5.8vw, 68px);
+    line-height: 1.1; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 28px;
+  }
+  .p1-sub {
+    font-size: 19px; line-height: 1.75; color: var(--text);
+    max-width: 760px; margin-bottom: 0;
+  }
+  .p1-sub strong { color: var(--ink); font-weight: 700; }
+
+  /* ============================================
+     PAGE 1 — 議題定位
+     ============================================ */
+  .position {
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .position-card {
+    border: 1px solid var(--line); border-radius: var(--r-l);
+    overflow: hidden; background: var(--paper);
+  }
+  .position-head {
+    padding: 28px 32px; background: var(--night); color: white;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .position-head .pq-quote {
+    font-family: var(--serif); font-size: 22px; font-weight: 500;
+    line-height: 1.4; max-width: 720px;
+  }
+  .position-head .pq-quote::before {
+    content: '「'; color: var(--afternoon-accent); margin-right: 4px;
+  }
+  .position-head .pq-quote::after {
+    content: '」'; color: var(--afternoon-accent);
+  }
+  .position-head .pq-source {
+    font-family: var(--mono); font-size: 11px;
+    color: rgba(255,255,255,0.55); letter-spacing: 0.12em;
+    text-transform: uppercase; align-self: flex-end;
+  }
+  .position-body {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; border-top: 0;
+  }
+  .pos-cell {
+    padding: 24px 28px; border-right: 1px solid var(--line);
+  }
+  .pos-cell:last-child { border-right: 0; }
+  .pos-label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-mute); margin-bottom: 10px;
+  }
+  .pos-value {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    color: var(--ink); margin-bottom: 6px; line-height: 1.4;
+  }
+  .pos-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 11px;
+    padding: 3px 8px; border-radius: 4px;
+    background: var(--morning-soft); color: var(--morning-primary);
+    letter-spacing: 0.05em;
+  }
+  .pos-difficulty {
+    color: var(--afternoon-primary); font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  .position-refs {
+    margin-top: 32px; padding: 24px 28px;
+    background: var(--bg); border-radius: var(--r-m);
+    border-left: 3px solid var(--text-mute);
+  }
+  .position-refs-title {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-mute);
+    margin-bottom: 12px;
+  }
+  .position-refs-body {
+    font-size: 14px; color: var(--text); line-height: 1.85;
+  }
+  .position-refs-body strong { color: var(--ink); }
+
+  /* ============================================
+     PAGE 1 — 角色陣容
+     ============================================ */
+  .cast { background: var(--morning-bg); }
+  .cast-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .cast-card {
+    background: var(--paper); border-radius: var(--r-m);
+    padding: 22px 22px 20px; border: 1px solid var(--line);
+    position: relative; min-height: 200px;
+    display: flex; flex-direction: column;
+  }
+  .cast-side {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 4px; border-radius: var(--r-m) 0 0 var(--r-m);
+  }
+  .cast-side.gov { background: var(--r-expert); }
+  .cast-side.proposer { background: var(--r-citizen); }
+  .cast-side.opp { background: var(--r-facilitator); }
+  .cast-side.academic { background: var(--r-po); }
+
+  .cast-role {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-mute); margin-bottom: 6px;
+  }
+  .cast-name {
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--ink); margin-bottom: 12px; line-height: 1.4;
+  }
+  .cast-line {
+    font-size: 13px; color: var(--text); line-height: 1.7;
+    flex: 1;
+  }
+  .cast-line::before {
+    content: '「'; color: var(--text-mute); font-weight: 700;
+  }
+  .cast-line::after {
+    content: '」'; color: var(--text-mute); font-weight: 700;
+  }
+
+  /* ============================================
+     PAGE 1 — 當天劇本(三幕)
+     ============================================ */
+  .script {
+    background: var(--night); color: rgba(255,255,255,0.92);
+    padding: 96px 0;
+  }
+  .script .section-tag { color: rgba(255,255,255,0.5); }
+  .script .section-title { color: white; }
+  .script .section-lead { color: rgba(255,255,255,0.7); }
+
+  .act {
+    margin-bottom: 64px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .act:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  .act-head {
+    display: flex; align-items: baseline; gap: 24px;
+    margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .act-num {
+    font-family: var(--mono); font-size: 13px;
+    letter-spacing: 0.2em; color: var(--afternoon-accent);
+    text-transform: uppercase;
+  }
+  .act-title {
+    font-family: var(--serif); font-size: 28px; font-weight: 700;
+    color: white; line-height: 1.3;
+  }
+  .act-purpose {
+    font-size: 14px; color: rgba(255,255,255,0.6); font-style: italic;
+    margin-left: auto;
+  }
+
+  .scene {
+    display: grid; grid-template-columns: 100px 1fr;
+    gap: 28px; margin-bottom: 24px;
+    align-items: baseline;
+  }
+  .scene-time {
+    font-family: var(--mono); font-size: 14px; font-weight: 700;
+    color: var(--afternoon-accent); letter-spacing: 0.05em;
+    border-left: 2px solid var(--afternoon-accent);
+    padding-left: 12px;
+  }
+  .scene-body { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,0.85); }
+  .scene-body .narration {
+    color: rgba(255,255,255,0.7); font-style: italic;
+  }
+  .scene-body .dialogue {
+    font-family: var(--serif); font-size: 18px;
+    color: white; display: block;
+    padding: 14px 20px; margin: 10px 0;
+    border-left: 3px solid var(--afternoon-accent);
+    background: rgba(255,255,255,0.04);
+    line-height: 1.55;
+  }
+  .scene-body .dialogue .speaker {
+    display: block;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--afternoon-accent); font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .scene-body .action {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px; display: block; margin: 8px 0;
+  }
+  .scene-body .action::before { content: '◦ '; color: var(--afternoon-accent); }
+
+  /* ============================================
+     PAGE 1 — 服務藍圖
+     ============================================ */
+  .blueprint { background: var(--paper); padding: 96px 0; }
+
+  .bp-legend {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    margin-bottom: 32px; padding: 16px 20px;
+    background: var(--bg); border-radius: var(--r-m);
+    font-size: 13px;
+  }
+  .bp-legend-item { display: flex; align-items: center; gap: 8px; }
+  .bp-legend-key {
+    width: 14px; height: 14px; border-radius: 3px;
+    border: 2px solid var(--afternoon-primary);
+    background: var(--afternoon-soft);
+  }
+  .bp-legend-normal {
+    width: 14px; height: 14px; border-radius: 3px;
+    background: var(--bg); border: 1px solid var(--line);
+  }
+  .bp-legend-empty {
+    width: 14px; height: 14px; border-radius: 3px;
+    background: transparent; border: 1px dashed var(--line);
+  }
+
+  .bp-scroll-hint {
+    display: none;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.12em; color: var(--text-mute);
+    margin-bottom: 12px;
+  }
+
+  .bp-frame {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    background: var(--paper);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  .bp-table {
+    display: grid;
+    grid-template-columns: 160px repeat(6, minmax(150px, 1fr));
+    min-width: 1100px;
+    border-collapse: collapse;
+  }
+  /* 表頭 */
+  .bp-head, .bp-time-head {
+    background: var(--ink); color: white;
+    padding: 16px 14px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; flex-direction: column; justify-content: center;
+    line-height: 1.4;
+  }
+  .bp-head { background: var(--ink); }
+  .bp-time-head {
+    background: linear-gradient(180deg, var(--ink) 0%, #1F2438 100%);
+  }
+  .bp-time-head .t-phase {
+    font-size: 12px; font-weight: 700; color: white;
+    margin-bottom: 2px;
+  }
+  .bp-time-head .t-range {
+    font-size: 10px; color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+  }
+  /* 角色名稱欄 */
+  .bp-role {
+    padding: 18px 16px;
+    background: var(--bg);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 4px;
+    position: relative;
+  }
+  .bp-role::before {
+    content: ''; position: absolute; left: 0; top: 16%; bottom: 16%;
+    width: 4px;
+  }
+  .bp-role[data-r="citizen"]::before { background: var(--r-citizen); }
+  .bp-role[data-r="expert"]::before { background: var(--r-expert); }
+  .bp-role[data-r="victim"]::before { background: var(--r-victim); }
+  .bp-role[data-r="facilitator"]::before { background: var(--r-facilitator); }
+  .bp-role[data-r="po"]::before { background: var(--r-po); }
+  .bp-role[data-r="ndc"]::before { background: var(--r-ndc); }
+  .bp-role-name {
+    font-family: var(--serif); font-size: 15px; font-weight: 700;
+    color: var(--ink); line-height: 1.3;
+  }
+  .bp-role-desc {
+    font-size: 11px; color: var(--text-mute); line-height: 1.4;
+  }
+  /* 一般 cell */
+  .bp-cell {
+    padding: 14px 14px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--paper);
+    min-height: 84px;
+    display: flex; align-items: flex-start;
+  }
+  .bp-cell.empty {
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 8px,
+      rgba(0,0,0,0.015) 8px, rgba(0,0,0,0.015) 9px
+    );
+    color: var(--text-mute);
+    font-style: italic;
+    font-size: 12px;
+  }
+  /* 關鍵動作 cell - highlight */
+  .bp-cell.key {
+    background: linear-gradient(135deg, #FFF6E5 0%, #FBEEDA 100%);
+    border-left: 4px solid var(--afternoon-primary);
+    padding-left: 14px;
+    position: relative;
+    box-shadow: inset 0 0 0 1px rgba(160,58,36,0.15);
+  }
+  .bp-cell.key .key-tag {
+    display: inline-block;
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    letter-spacing: 0.15em;
+    background: var(--afternoon-primary); color: white;
+    padding: 2px 6px; border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .bp-cell.key .key-text {
+    font-weight: 500; color: var(--afternoon-ink); font-size: 13px;
+    line-height: 1.55; display: block;
+  }
+  .bp-cell.key .key-text strong {
+    color: var(--afternoon-primary); font-weight: 700;
+  }
+  .bp-cell:last-child { border-right: 0; }
+
+  /* 服務藍圖底下說明 */
+  .bp-summary {
+    margin-top: 32px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .bp-summary-item {
+    padding: 20px 22px; border-radius: var(--r-m);
+    background: var(--afternoon-soft);
+    border-left: 3px solid var(--afternoon-primary);
+  }
+  .bp-summary-when {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--afternoon-primary); margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .bp-summary-who {
+    font-family: var(--serif); font-size: 15px; font-weight: 700;
+    color: var(--afternoon-ink); margin-bottom: 6px;
+  }
+  .bp-summary-what {
+    font-size: 13px; color: var(--text); line-height: 1.65;
+  }
+
+  /* ============================================
+     PAGE 1 — to Page 2 連結
+     ============================================ */
+  .to-page2 {
+    background: linear-gradient(135deg, var(--night) 0%, #1A1F33 100%);
+    color: white; padding: 64px 0;
+    text-align: center;
+  }
+  .to-page2 .tp-title {
+    font-family: var(--serif); font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700; margin-bottom: 12px; color: white;
+  }
+  .to-page2 .tp-sub {
+    color: rgba(255,255,255,0.65); font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .to-page2 .tp-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--afternoon-accent); color: var(--night);
+    font-family: var(--sans); font-size: 14px; font-weight: 700;
+    padding: 14px 24px; border-radius: 100px;
+    border: 0; cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    letter-spacing: 0.02em;
+  }
+  .to-page2 .tp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(216,155,63,0.3);
+  }
+
+  /* ============================================
+     PAGE 2 — 沿用之前的設計
+     ============================================ */
+  .p2-hero {
+    background: linear-gradient(135deg, #F4F6FB 0%, #FAFBFD 50%, #FCF6EC 100%);
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .p2-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(74,123,201,0.08) 0%, transparent 45%),
+      radial-gradient(circle at 85% 70%, rgba(216,155,63,0.10) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .p2-hero-inner { position: relative; }
+  .p2-meta {
+    display: flex; align-items: center; gap: 16px;
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.12em; color: var(--text-mute);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .p2-hero h1 {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(36px, 5.4vw, 64px);
+    line-height: 1.1; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 24px;
+  }
+  .p2-hero h1 .accent-m { color: var(--morning-primary); }
+  .p2-hero h1 .accent-a { color: var(--afternoon-primary); }
+  .p2-hero-sub {
+    font-size: 19px; line-height: 1.75; color: var(--text);
+    max-width: 720px;
+  }
+
+  /* 方法論總覽 */
+  .method { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .method-grid {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 0; align-items: stretch;
+    border: 1px solid var(--line); border-radius: var(--r-l);
+    overflow: hidden; background: var(--paper);
+    box-shadow: 0 4px 24px rgba(20,23,43,0.04);
+  }
+  .method-col { padding: 48px 40px; position: relative; }
+  .method-col.morning { background: linear-gradient(180deg, #F4F6FB 0%, #FFFFFF 100%); }
+  .method-col.afternoon { background: linear-gradient(180deg, #FCF6EC 0%, #FFFFFF 100%); }
+  .method-bridge { width: 1px; background: var(--line); position: relative; }
+  .method-bridge::after {
+    content: '⟶'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); background: var(--paper);
+    padding: 16px 12px; color: var(--text-mute); font-size: 18px;
+  }
+  .method-time {
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .method-col.morning .method-time { color: var(--morning-accent); }
+  .method-col.afternoon .method-time { color: var(--afternoon-primary); }
+  .method-headline {
+    font-family: var(--serif); font-size: 30px; font-weight: 900;
+    line-height: 1.25; margin-bottom: 18px; color: var(--ink);
+  }
+  .method-purpose {
+    font-size: 15px; color: var(--text); line-height: 1.75;
+    margin-bottom: 24px;
+  }
+  .method-keypoints {
+    list-style: none; padding: 0;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+  .method-keypoints li {
+    font-size: 14px; color: var(--text); padding: 6px 0;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .method-keypoints li::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0; transform: translateY(-2px);
+  }
+  .morning .method-keypoints li::before { background: var(--morning-accent); }
+  .afternoon .method-keypoints li::before { background: var(--afternoon-accent); }
+
+  /* 上午全局觀矩陣 */
+  .morning-section { background: var(--morning-bg); }
+  .morning-section .section-title { color: var(--morning-ink); }
+  .morning-section .section-tag { color: var(--morning-accent); }
+
+  .axis-frame {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 24px; margin: 32px 0 24px;
+  }
+  .y-label-set {
+    display: flex; flex-direction: column; align-items: flex-end;
+    padding-right: 12px;
+    border-right: 1px solid var(--morning-accent);
+  }
+  .y-tier-block {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-end;
+  }
+  .y-tier {
+    font-family: var(--serif); font-size: 15px; font-weight: 700;
+    color: var(--morning-ink); line-height: 1.3;
+  }
+  .y-tier-desc {
+    font-size: 11px; color: var(--text-mute); letter-spacing: 0.05em;
+  }
+  .matrix {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 14px;
+  }
+  .x-axis-labels {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin-left: 104px; margin-bottom: 12px;
+  }
+  .x-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--morning-primary);
+    padding-bottom: 8px; border-bottom: 1px solid var(--morning-accent);
+  }
+  .perspective-card {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--r-m); padding: 22px 24px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-left: 3px solid var(--morning-accent);
+  }
+  .perspective-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(44,62,102,0.08);
+  }
+  .pc-num {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--morning-accent); letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .pc-title {
+    font-family: var(--serif); font-size: 19px; font-weight: 700;
+    color: var(--morning-ink); margin-bottom: 6px; line-height: 1.3;
+  }
+  .pc-desc {
+    font-size: 13px; color: var(--text); line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .pc-catch {
+    font-size: 12px; color: var(--morning-primary);
+    padding-top: 10px; border-top: 1px dashed var(--line);
+  }
+  .pc-catch strong {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-mute); font-weight: 500;
+    display: block; margin-bottom: 3px;
+  }
+
+  .axis-note {
+    margin-top: 28px; padding: 20px 24px;
+    background: var(--morning-soft); border-radius: var(--r-m);
+    font-size: 14px; color: var(--morning-ink);
+    border-left: 3px solid var(--morning-accent);
+  }
+  .axis-note strong { color: var(--morning-primary); font-weight: 700; }
+
+  /* Bridge / Reframe */
+  .bridge {
+    background: linear-gradient(180deg, var(--morning-bg) 0%, var(--afternoon-bg) 100%);
+    padding: 88px 0;
+  }
+  .bridge-inner {
+    max-width: 900px; margin: 0 auto; text-align: center;
+    padding: 0 32px;
+  }
+  .bridge-stamp {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-mute); margin-bottom: 28px;
+    padding: 6px 14px; border: 1px solid var(--line);
+    border-radius: 100px; background: var(--paper);
+  }
+  .bridge-from-to {
+    display: grid; grid-template-columns: 1fr 60px 1fr;
+    gap: 16px; align-items: center; margin: 36px 0;
+  }
+  .bridge-box {
+    padding: 28px 26px; border-radius: var(--r-m);
+    background: var(--paper); border: 1px solid var(--line);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .bridge-box.from { border-top: 3px solid var(--morning-primary); }
+  .bridge-box.to { border-top: 3px solid var(--afternoon-primary); }
+  .bridge-box-label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-mute); margin-bottom: 12px;
+  }
+  .bridge-box-text {
+    font-family: var(--serif); font-size: 20px; font-weight: 700;
+    line-height: 1.45;
+  }
+  .bridge-box.from .bridge-box-text { color: var(--morning-ink); }
+  .bridge-box.to .bridge-box-text { color: var(--afternoon-ink); }
+  .bridge-arrow { font-size: 30px; color: var(--text-mute); }
+  .bridge-why {
+    font-size: 16px; color: var(--text); line-height: 1.85;
+    max-width: 720px; margin: 32px auto 0;
+  }
+
+  /* 下午 */
+  .afternoon-section { background: var(--afternoon-bg); }
+  .afternoon-section .section-title { color: var(--afternoon-ink); }
+  .afternoon-section .section-tag { color: var(--afternoon-primary); }
+
+  .stage-grid { display: grid; grid-template-columns: 1fr; gap: 56px; }
+  .stage-block-title {
+    font-family: var(--serif); font-size: 21px; font-weight: 700;
+    color: var(--afternoon-ink); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .stage-block-title .badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    background: var(--afternoon-primary); color: white;
+    padding: 4px 10px; border-radius: 4px;
+    letter-spacing: 0.1em;
+  }
+  .stage-block-desc {
+    font-size: 14px; color: var(--text-mute);
+    margin-bottom: 24px; line-height: 1.7;
+  }
+
+  .hmw-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .hmw-card {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--r-m); padding: 22px 24px;
+    border-left: 3px solid var(--afternoon-accent);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .hmw-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(160,58,36,0.08); }
+  .hmw-tag {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.15em; color: var(--afternoon-primary);
+    margin-bottom: 8px;
+  }
+  .hmw-q {
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--afternoon-ink); line-height: 1.45;
+    margin-bottom: 10px;
+  }
+  .hmw-hint { font-size: 13px; color: var(--text-mute); line-height: 1.6; }
+
+  .story-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .story-card {
+    background: var(--paper); border-radius: var(--r-m);
+    border: 1px solid var(--line); overflow: hidden;
+    transition: transform 0.25s ease;
+  }
+  .story-card:hover { transform: translateY(-3px); }
+  .story-banner {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--afternoon-primary), var(--afternoon-ink));
+    color: white;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .story-body { padding: 20px 22px 24px; }
+  .story-title {
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--afternoon-ink); margin-bottom: 10px; line-height: 1.4;
+  }
+  .story-desc { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
+  .story-takeaway {
+    font-size: 12px; color: var(--afternoon-primary);
+    padding-top: 12px; border-top: 1px dashed var(--line);
+    line-height: 1.6;
+  }
+  .story-takeaway strong {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-mute); font-weight: 500;
+    display: block; margin-bottom: 4px;
+  }
+
+  /* Why */
+  .why-section { background: var(--paper); padding: 88px 0; }
+  .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 16px; }
+  .why-item {
+    padding: 26px 28px;
+    border: 1px solid var(--line); border-radius: var(--r-m);
+    background: var(--bg);
+  }
+  .why-num {
+    font-family: var(--serif); font-size: 32px; font-weight: 900;
+    color: var(--morning-accent); line-height: 1; margin-bottom: 10px;
+  }
+  .why-title {
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--ink); margin-bottom: 10px;
+  }
+  .why-desc { font-size: 14px; color: var(--text); line-height: 1.75; }
+
+  /* Footer */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.85);
+    padding: 48px 0 40px; font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+  footer .ft-brand {
+    font-family: var(--serif); font-size: 18px; font-weight: 700;
+    color: white;
+  }
+  footer .ft-meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.55);
+    line-height: 1.8;
+  }
+
+  /* RWD */
+  @media (max-width: 1100px) {
+    .position-body { grid-template-columns: repeat(2, 1fr); }
+    .pos-cell:nth-child(2) { border-right: 0; }
+    .pos-cell:nth-child(1), .pos-cell:nth-child(2) { border-bottom: 1px solid var(--line); }
+    .cast-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .top-nav-inner { flex-direction: column; gap: 14px; padding: 14px 20px; }
+    .page-tabs button { padding: 7px 12px; font-size: 12px; }
+    .wrap { padding: 0 20px; }
+    .section { padding: 56px 0; }
+    .p1-hero, .p2-hero { padding: 60px 0; }
+    .position-body { grid-template-columns: 1fr; }
+    .pos-cell { border-right: 0; border-bottom: 1px solid var(--line); }
+    .pos-cell:last-child { border-bottom: 0; }
+    .cast-grid { grid-template-columns: 1fr; }
+    .scene { grid-template-columns: 1fr; gap: 8px; }
+    .scene-time { border-left: 0; border-bottom: 2px solid var(--afternoon-accent); padding: 0 0 6px 0; display: inline-block; }
+    .bp-scroll-hint { display: block; }
+    .method-grid { grid-template-columns: 1fr; }
+    .method-bridge { width: auto; height: 1px; }
+    .method-bridge::after { content: '↓'; }
+    .axis-frame { grid-template-columns: 1fr; }
+    .y-label-set { display: none; }
+    .matrix { grid-template-columns: 1fr; }
+    .x-axis-labels { display: none; }
+    .bridge-from-to { grid-template-columns: 1fr; }
+    .bridge-arrow { transform: rotate(90deg); }
+    .hmw-grid { grid-template-columns: 1fr; }
+    .story-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .bp-summary { grid-template-columns: 1fr; }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--afternoon-accent);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 頂部分頁導航 ============ -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <div>
+      <span class="brand">協作會議結構提案</span>
+      <span class="brand-tag">For 國發會</span>
+    </div>
+    <div class="page-tabs">
+      <button data-page="1" class="active"><span class="ord">01</span>當天現場</button>
+      <button data-page="2"><span class="ord">02</span>結構方法論</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ╔════════════════════════════════════════════╗
+     ║ PAGE 1 — 當天現場                          ║
+     ╚════════════════════════════════════════════╝ -->
+<main id="page-1" class="page active">
+
+  <!-- HERO -->
+  <section class="p1-hero">
+    <div class="wrap">
+      <div class="p1-meta">
+        <span class="dot"></span>
+        <span>SCENE</span>
+        <span>·</span>
+        <span>Collaborative Meeting</span>
+        <span>·</span>
+        <span>Live Reconstruction</span>
+      </div>
+      <div class="p1-date">8 月 14 日,星期四  ·  09:00 AM</div>
+      <h1 class="p1-headline">
+        如果這個提案<br>真的進到協作會議的桌上——
+      </h1>
+      <p class="p1-sub">
+        以「<strong>嚴懲酒駕毒駕致死傷:增訂 20 年以上有期徒刑至死刑,視同蓄意謀殺</strong>」這份在 Join 平台達到 5,000 附議的提案為例,我們完整重現協作會議的那一天——誰會坐在那張桌邊、什麼時候會發生關鍵時刻、引導師會在哪個瞬間翻轉題目。
+      </p>
+    </div>
+  </section>
+
+  <!-- 議題定位 -->
+  <section class="section position">
+    <div class="wrap">
+      <span class="section-tag">01 — 議題定位</span>
+      <h2 class="section-title">先把這個提案,放回協作會議的座標系裡</h2>
+      <p class="section-lead">
+        每個進來的提案,引導團隊都會先做這件事:依照領域、問題類型、難度、生命週期四個維度做定位。這個動作會直接決定後續的邀請名單、議程節奏、與議題拆解的策略。
+      </p>
+
+      <div class="position-card">
+        <div class="position-head">
+          <div class="pq-quote">
+            嚴懲酒駕毒駕致死傷:增訂 20 年以上有期徒刑至死刑,視同蓄意謀殺。
+          </div>
+          <div class="pq-source">
+            Join.gov.tw · 5,200 附議
+          </div>
+        </div>
+        <div class="position-body">
+          <div class="pos-cell">
+            <div class="pos-label">議題領域</div>
+            <div class="pos-value">公共安全</div>
+            <span class="pos-tag">+ 司法人權(次)</span>
+          </div>
+          <div class="pos-cell">
+            <div class="pos-label">問題類型</div>
+            <div class="pos-value">多元意見分歧</div>
+            <span class="pos-tag">× 跨部會協調</span>
+          </div>
+          <div class="pos-cell">
+            <div class="pos-label">難度等級</div>
+            <div class="pos-value pos-difficulty">★★★ 挑戰級+</div>
+            <span class="pos-tag">觸碰刑法+死刑</span>
+          </div>
+          <div class="pos-cell">
+            <div class="pos-label">政策生命週期</div>
+            <div class="pos-value">政策評估/調整期</div>
+            <span class="pos-tag">刑法 185-3 已修 6 次</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="position-refs">
+        <div class="position-refs-title">過往可對照案例(來自 83 場協作會議資料庫)</div>
+        <div class="position-refs-body">
+          這個議題的難度結構,接近 <strong>第 16 號「優生保健法修正草案」</strong>(價值衝突)、<strong>第 45 號「公投法人權議題」</strong>(憲法層次)、<strong>第 59 號「針對酒駕,發想可能的解法」</strong>(2017,直接議題前例)、與 <strong>第 50 號「隨里程徵收燃料費」</strong>(多元意見分歧)。共同特徵:**價值層級大於技術層級**,協作會議不會直接表決,但會把議題打開成可執行的政策光譜。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 與會角色陣容 -->
+  <section class="section cast">
+    <div class="wrap">
+      <span class="section-tag">02 — 與會陣容</span>
+      <h2 class="section-title">這張桌邊,會坐著哪些人</h2>
+      <p class="section-lead">
+        引導團隊會在會前刻意做利害關係人盤點,**確保正反方人數不會懸殊**,否則現場會變成情緒宣洩而不是協作。下面是這個議題預期出席的代表角色,以及他們會帶來的觀點。
+      </p>
+
+      <div class="cast-grid">
+        <article class="cast-card">
+          <span class="cast-side gov"></span>
+          <div class="cast-role">政府 · 主管機關</div>
+          <div class="cast-name">法務部 / 法務部檢察司</div>
+          <div class="cast-line">刑法 185-3 條我們近十年已修法 6 次,加重後的累再犯數據需要先攤開來談——</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side gov"></span>
+          <div class="cast-role">政府 · 執行單位</div>
+          <div class="cast-name">內政部警政署 + 衛福部心健司</div>
+          <div class="cast-line">毒駕快篩有它的技術瓶頸,而且多數重複酒駕者,其實是酒精使用障礙患者。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side proposer"></span>
+          <div class="cast-role">提案方</div>
+          <div class="cast-name">提案人 + 酒駕受害者家屬</div>
+          <div class="cast-line">我女兒就是這樣沒了。我不要你們講太多,我要你們承諾這不會再發生。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side opp"></span>
+          <div class="cast-role">對立方</div>
+          <div class="cast-name">司改會 / 廢死聯盟</div>
+          <div class="cast-line">2024 年憲判字第 8 號剛對死刑做出限縮性合憲判決,新增死刑罪名會撞上違憲審查。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side academic"></span>
+          <div class="cast-role">學界 · 刑法</div>
+          <div class="cast-name">刑事法學者</div>
+          <div class="cast-line">「視同蓄意謀殺」在刑法理論上撞上罪刑相當原則——這需要展開談。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side academic"></span>
+          <div class="cast-role">學界 · 公衛</div>
+          <div class="cast-name">成癮醫學專家</div>
+          <div class="cast-line">嚴懲對「酒精使用障礙」這群人沒效,要靠強制治療與酒精鎖。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side gov"></span>
+          <div class="cast-role">政府 · 司法量刑</div>
+          <div class="cast-name">司法院刑事廳</div>
+          <div class="cast-line">量刑現場其實有自己的邏輯,直接修法條未必能改變實務。</div>
+        </article>
+        <article class="cast-card">
+          <span class="cast-side gov"></span>
+          <div class="cast-role">政府 · 主持與整合</div>
+          <div class="cast-name">PDIS 引導師 + 行政院 PO</div>
+          <div class="cast-line">今天的目的不是表決,而是把問題的全貌攤開,讓每個人都被聽見。</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 當天劇本 -->
+  <section class="script">
+    <div class="wrap">
+      <span class="section-tag">03 — 當天劇本</span>
+      <h2 class="section-title">三幕劇:從事實澄清,到重新定義,再到共同創造</h2>
+      <p class="section-lead">
+        以下是這場會議的劇本式重現。時間是虛擬的,但每個發言的邏輯都對應到台灣現行制度與過往協作會議的真實節奏。
+      </p>
+
+      <!-- 第一幕 -->
+      <div class="act">
+        <div class="act-head">
+          <span class="act-num">ACT I · 09:00 — 12:00</span>
+          <span class="act-title">上午|事實澄清,讓資料說話</span>
+          <span class="act-purpose">目的:建立全局觀,接住每個角色</span>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">09:00</div>
+          <div class="scene-body">
+            <span class="narration">引導師站在白板前,先不切入正反方。她把今天要展開的六個視角畫成心智圖貼在牆上——憲法、學者、法務、警政、衛福、受害者。會場安靜下來。</span>
+            <div class="dialogue">
+              <span class="speaker">PDIS 引導師</span>
+              「今天的目的不是要決定『該不該死刑』。今天的目的,是把這個問題的全貌看清楚——然後一起找出讓這件事不再發生的方法。」
+            </div>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">09:30</div>
+          <div class="scene-body">
+            <span class="narration">法務部代表打開第一張投影片——刑法 185-3 條近十年的修法軌跡,以及對應的累再犯曲線圖。</span>
+            <div class="dialogue">
+              <span class="speaker">法務部代表</span>
+              「2013 年我們提高到 2 年以下、2019 年酒駕致死最高無期徒刑、2022 年再加重附帶刑。再犯率從 19.4% 降到 13.2%,但下降的斜率在 2022 年之後就趨於平緩。」
+            </div>
+            <span class="action">提案人皺眉,但沒有打斷。</span>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">10:30</div>
+          <div class="scene-body">
+            <span class="narration">警政署代表接著上場。他帶來的不是數據,是一份毒駕快篩的現場照片——警員在路邊測試的真實情境。</span>
+            <div class="dialogue">
+              <span class="speaker">警政署代表</span>
+              「毒駕跟酒駕不一樣。我們現在的快篩,從接觸到結果至少 20 分鐘,而且品項只能驗常見的三種。法重不重不是現場的問題——是抓不抓得到的問題。」
+            </div>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">11:15</div>
+          <div class="scene-body">
+            <span class="narration">衛福部代表把投影片切換成一張醫學圖表——酒精使用障礙(AUD)的臨床表現與行為模式。</span>
+            <div class="dialogue">
+              <span class="speaker">成癮醫學專家</span>
+              「我必須說一件不討喜的事實:重複酒駕的人,大多數不是『壞人』,而是『病人』。對 AUD 患者,嚴刑沒效,因為他們在喝下那杯酒的瞬間就失去了判斷力。」
+            </div>
+            <span class="action">受害者家屬席的一位母親開始流淚。</span>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">11:45</div>
+          <div class="scene-body">
+            <span class="narration">引導師走到受害者家屬席,蹲下來,把麥克風遞給那位母親。</span>
+            <div class="dialogue">
+              <span class="speaker">受害者家屬</span>
+              「……我女兒今年應該 23 歲。她當時穿著大學迎新晚會的禮服回家。我不知道你們講的那些『AUD』、『罪刑相當』是什麼。我只知道,撞她的人三個月後又出來開車了。」
+            </div>
+            <span class="action">全場沉默 90 秒。引導師沒有打斷這個沉默。</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二幕 -->
+      <div class="act">
+        <div class="act-head">
+          <span class="act-num">ACT II · 12:00 — 13:30</span>
+          <span class="act-title">中午|關鍵轉折,重新定義題目</span>
+          <span class="act-purpose">目的:把立場題,轉成共創題</span>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">12:00</div>
+          <div class="scene-body">
+            <span class="narration">午餐前的最後 15 分鐘。引導師沒有讓大家直接散會,而是站起來、把白板擦乾淨,只在中間寫下一行字。</span>
+            <div class="dialogue">
+              <span class="speaker">PDIS 引導師</span>
+              「在我們去吃飯前,我想請大家把今天上午聽到的話,放在心裡 5 秒鐘。<br><br>然後我想問一個問題——我們是不是,該換一個問法?」
+            </div>
+            <span class="action">她在白板上寫下兩行字。</span>
+            <div class="dialogue">
+              <span class="speaker">白板上</span>
+              FROM:「該不該加重其刑到死刑?」<br>
+              TO:「如何讓這件事,不再發生?」
+            </div>
+            <span class="action">提案人看了很久,點了頭。受害者家屬把那位母親的手握起來。會場開始有人小聲說「對」。</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三幕 -->
+      <div class="act">
+        <div class="act-head">
+          <span class="act-num">ACT III · 13:30 — 17:00</span>
+          <span class="act-title">下午|HMW 共創,加上他鄉的故事</span>
+          <span class="act-purpose">目的:從問題到創造,激發落地解法</span>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">13:30</div>
+          <div class="scene-body">
+            <span class="narration">下午開場,引導師把上午定義過的新題目,拆成四個 HMW(How Might We)問句,貼在牆的四個角落。每個人領一疊便利貼,分組移動。</span>
+            <div class="dialogue">
+              <span class="speaker">PDIS 引導師</span>
+              「不要再爭辯刑度。請幫我想:科技端怎麼讓酒駕者連車都發動不了?醫療端怎麼讓累犯不只是被罰,還會被治療?受害者家屬真正需要的支持是什麼?整個社會怎麼把同行酒駕當成共犯?」
+            </div>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">14:45</div>
+          <div class="scene-body">
+            <span class="narration">三個世界各地「減少了發生的故事」被投影到牆上——瑞典 Vision Zero、日本同乘加罰、加州酒精鎖。</span>
+            <div class="dialogue">
+              <span class="speaker">PDIS 引導師</span>
+              「我不是要你們抄,我是要你們看見——別人怎麼做到的。瑞典把每一起交通死亡視為『設計失敗』,加州讓所有酒駕者強制裝酒精鎖,日本連同行的朋友都會被起訴。我們的台灣,可以是什麼樣?」
+            </div>
+          </div>
+        </div>
+
+        <div class="scene">
+          <div class="scene-time">16:00</div>
+          <div class="scene-body">
+            <span class="narration">收斂時刻。牆上有超過 80 張便利貼。引導師帶大家把它們聚類,選出可立即推動的三條主線。</span>
+            <div class="dialogue">
+              <span class="speaker">會議共識</span>
+              一、酒精鎖適用範圍擴大(交通部主政)<br>
+              二、累犯強制戒癮治療與司法處遇連動(法務部 + 衛福部)<br>
+              三、毒駕檢測法制化與設備佈建(警政署)
+            </div>
+            <span class="action">關於「視同蓄意謀殺」的擬制,建議列入下次刑法修正研議納入學界意見。死刑提案沒有被採納——但提案人拿到的,是一份比原訴求實在的承諾。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 服務藍圖 -->
+  <section class="section blueprint">
+    <div class="wrap">
+      <span class="section-tag">04 — 服務藍圖</span>
+      <h2 class="section-title">這一天,誰在什麼時間做什麼事?</h2>
+      <p class="section-lead">
+        協作會議不只是一場 8 小時的會,而是一段橫跨會前、會中、會後的服務歷程。下面這張服務藍圖,把六種角色 × 六個時段攤平——黃色 highlight 的格子,是「沒有他們做這件事,整場會議就會崩」的關鍵行動。
+      </p>
+
+      <div class="bp-legend">
+        <div class="bp-legend-item">
+          <span class="bp-legend-key"></span>
+          <span><strong>關鍵行動</strong>(這個角色在這個時段的不可替代任務)</span>
+        </div>
+        <div class="bp-legend-item">
+          <span class="bp-legend-normal"></span>
+          <span>常態任務</span>
+        </div>
+        <div class="bp-legend-item">
+          <span class="bp-legend-empty"></span>
+          <span>非主場(支援角色)</span>
+        </div>
+      </div>
+
+      <p class="bp-scroll-hint">← 左右滑動查看完整藍圖 →</p>
+
+      <div class="bp-frame">
+        <div class="bp-table">
+          <!-- 表頭列 -->
+          <div class="bp-head">角色 / 時段</div>
+          <div class="bp-time-head">
+            <div class="t-phase">會前準備</div>
+            <div class="t-range">T-30 ~ T-7 天</div>
+          </div>
+          <div class="bp-time-head">
+            <div class="t-phase">會前訪談</div>
+            <div class="t-range">T-7 ~ T-1 天</div>
+          </div>
+          <div class="bp-time-head">
+            <div class="t-phase">上午|了解人</div>
+            <div class="t-range">09:00 — 12:00</div>
+          </div>
+          <div class="bp-time-head">
+            <div class="t-phase">中午|Reframe</div>
+            <div class="t-range">12:00 — 13:30</div>
+          </div>
+          <div class="bp-time-head">
+            <div class="t-phase">下午|改變人</div>
+            <div class="t-range">13:30 — 17:00</div>
+          </div>
+          <div class="bp-time-head">
+            <div class="t-phase">會後追蹤</div>
+            <div class="t-range">T+1 ~ T+30 天</div>
+          </div>
+
+          <!-- 民眾 / 提案人 -->
+          <div class="bp-role" data-r="citizen">
+            <div class="bp-role-name">民眾 / 提案人</div>
+            <div class="bp-role-desc">Join 平台提案者與附議者代表</div>
+          </div>
+          <div class="bp-cell">提案達 5,000 附議,等待會議召開通知</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">接受引導師<strong>會前訪談</strong>,訴說提案動機、希望被解決的核心問題</span>
+          </div>
+          <div class="bp-cell">出席,完整聆聽六個視角的事實澄清</div>
+          <div class="bp-cell">感受 reframe 的轉折,從訴求轉向目標</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">領導 HMW 共創,將原始訴求轉化為<strong>可落地的方案建議</strong></span>
+          </div>
+          <div class="bp-cell">追蹤政策回應,確認承諾兌現</div>
+
+          <!-- 與會專家 -->
+          <div class="bp-role" data-r="expert">
+            <div class="bp-role-name">與會專家(政府)</div>
+            <div class="bp-role-desc">法務、警政、衛福、司法院等</div>
+          </div>
+          <div class="bp-cell">收到出席邀請,初步盤點手上資料</div>
+          <div class="bp-cell">與引導師預談,確認可說明內容</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">以<strong>數據與現場真實</strong>澄清議題,讓直覺被證據檢驗</span>
+          </div>
+          <div class="bp-cell">午餐交流,跨部會非正式對齊</div>
+          <div class="bp-cell">回應 HMW 的可行性,標示可動與不可動</div>
+          <div class="bp-cell">回部會推動承諾事項</div>
+
+          <!-- 受害者家屬 -->
+          <div class="bp-role" data-r="victim">
+            <div class="bp-role-name">受害者家屬</div>
+            <div class="bp-role-desc">直接經驗者與情感正義方</div>
+          </div>
+          <div class="bp-cell">被邀請,獲得情感與心理準備支持</div>
+          <div class="bp-cell">與引導師深談,被傾聽、不被引導</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">說出<strong>真實的失去</strong>,讓整場會議的情感重量被建立</span>
+          </div>
+          <div class="bp-cell">被引導師引導,從「報復」轉向「不再發生」</div>
+          <div class="bp-cell">看見具體支持方案被討論</div>
+          <div class="bp-cell">成為長期倡議夥伴,持續監督</div>
+
+          <!-- 引導師(PDIS) -->
+          <div class="bp-role" data-r="facilitator">
+            <div class="bp-role-name">引導師(PDIS)</div>
+            <div class="bp-role-desc">主持人、議題拆解者</div>
+          </div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">完成<strong>利害關係人盤點</strong>、議題地圖、議程設計</span>
+          </div>
+          <div class="bp-cell">深度訪談各方,預演議題地圖</div>
+          <div class="bp-cell">主持事實澄清,確保每個視角都被聽見</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">執行<strong>關鍵 reframe</strong>——這是整場會議的樞紐動作</span>
+          </div>
+          <div class="bp-cell">主持 HMW 共創、引導發散與收斂</div>
+          <div class="bp-cell">撰寫紀錄報告、追蹤共識落地</div>
+
+          <!-- PO(部會聯絡人) -->
+          <div class="bp-role" data-r="po">
+            <div class="bp-role-name">PO(部會聯絡人)</div>
+            <div class="bp-role-desc">Participation Officer</div>
+          </div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">執行<strong>跨部會聯繫</strong>,確認單位出席與資料準備</span>
+          </div>
+          <div class="bp-cell">協助部會專家對焦會議重點</div>
+          <div class="bp-cell">支援部會回應,協調即時資料</div>
+          <div class="bp-cell">午間溝通協調、處理突發狀況</div>
+          <div class="bp-cell">記錄部會承諾、即時 fact-check</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">系統化<strong>追蹤部會執行進度</strong>,定期回報國發會</span>
+          </div>
+
+          <!-- 國發會 / 政委辦公室 -->
+          <div class="bp-role" data-r="ndc">
+            <div class="bp-role-name">國發會 / 政委辦</div>
+            <div class="bp-role-desc">議題核定與政策整合</div>
+          </div>
+          <div class="bp-cell">核定議題、調度資源、議程拍板</div>
+          <div class="bp-cell">督導預備工作、確認跨部會就位</div>
+          <div class="bp-cell">列席聆聽,觀察議題真實樣貌</div>
+          <div class="bp-cell">午間與引導師對齊 reframe 方向</div>
+          <div class="bp-cell">列席聆聽,評估政策可行光譜</div>
+          <div class="bp-cell key">
+            <span class="key-tag">KEY</span>
+            <span class="key-text">統籌<strong>政策整合與發布</strong>,將會議共識轉化為跨部會行動</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highlight 摘要:6 個關鍵時刻 -->
+      <div style="margin-top: 48px;">
+        <h3 style="font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 8px;">
+          這 6 個關鍵時刻,決定了這場會議的成敗
+        </h3>
+        <p style="font-size: 14px; color: var(--text-mute); margin-bottom: 24px;">
+          以下是服務藍圖上 highlight 的 6 個關鍵節點摘要,任何一個失守,整場會議都會偏離軌道。
+        </p>
+        <div class="bp-summary">
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">T-30 · 會前準備</div>
+            <div class="bp-summary-who">引導師 × PO</div>
+            <div class="bp-summary-what">利害關係人盤點與跨部會聯繫——這決定了當天桌邊誰會在、誰不會在。</div>
+          </div>
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">T-7 · 會前訪談</div>
+            <div class="bp-summary-who">引導師 × 民眾</div>
+            <div class="bp-summary-what">深度訪談提案人,讓提案訴求被完整理解——避免會場淪為簡化對立。</div>
+          </div>
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">上午|事實澄清</div>
+            <div class="bp-summary-who">與會專家 × 受害者</div>
+            <div class="bp-summary-what">數據與情感同時上桌,建立全局觀——這是「了解人」階段的核心產出。</div>
+          </div>
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">中午|Reframe</div>
+            <div class="bp-summary-who">引導師</div>
+            <div class="bp-summary-what">把立場題轉成共創題——這是整場會議的樞紐,沒有這一步,下午會回到對立。</div>
+          </div>
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">下午|HMW 共創</div>
+            <div class="bp-summary-who">民眾 × 全體</div>
+            <div class="bp-summary-what">提案人主動參與方案共創——這才是真正讓民眾「從訴求方變成共創者」的瞬間。</div>
+          </div>
+          <div class="bp-summary-item">
+            <div class="bp-summary-when">T+30 · 會後追蹤</div>
+            <div class="bp-summary-who">PO × 國發會</div>
+            <div class="bp-summary-what">系統化追蹤承諾兌現、政策整合發布——讓會議的能量真正落到行政體系。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 到第二頁 -->
+  <section class="to-page2">
+    <div class="wrap">
+      <h2 class="tp-title">想看背後的設計邏輯?</h2>
+      <p class="tp-sub">這場現場感的背後,是一套「了解人 → 改變人」的方法論結構。</p>
+      <button class="tp-btn" onclick="goToPage(2)">
+        前往第二頁:結構方法論 →
+      </button>
+    </div>
+  </section>
+</main>
+
+<!-- ╔════════════════════════════════════════════╗
+     ║ PAGE 2 — 結構方法論                        ║
+     ╚════════════════════════════════════════════╝ -->
+<main id="page-2" class="page">
+
+  <!-- HERO -->
+  <section class="p2-hero">
+    <div class="wrap p2-hero-inner">
+      <div class="p2-meta">
+        <span>提案文件</span>
+        <span>·</span>
+        <span>結構方法論</span>
+        <span>·</span>
+        <span>給 國家發展委員會</span>
+      </div>
+      <h1>
+        上午 <span class="accent-m">了解人</span>,<br>
+        下午 <span class="accent-a">改變人</span>。
+      </h1>
+      <p class="p2-hero-sub">
+        一場好的協作會議,不是去表決誰對誰錯,而是先建立全局觀、接住每個角色,再用 HMW 問句與「減少發生的故事」激發新的可能。第一頁看到的現場感,背後是這套有意識的結構設計。
+      </p>
+    </div>
+  </section>
+
+  <!-- 方法論總覽 -->
+  <section class="section method">
+    <div class="wrap">
+      <span class="section-tag">01 — 方法論總覽</span>
+      <h2 class="section-title">一天兩個動作:先了解,再改變</h2>
+      <p class="section-lead">
+        協作會議的結構不是「議程清單」,而是有意識的節奏設計。上午聚焦「了解人」——把利害關係人完整接住、把議題的全局觀建立起來;下午聚焦「改變人」——以重新定義過的問題出發,激發出可以真正落地的解法。
+      </p>
+
+      <div class="method-grid">
+        <div class="method-col morning">
+          <div class="method-time">AM · Morning</div>
+          <h3 class="method-headline">了解人</h3>
+          <p class="method-purpose">
+            目的:在「該怎麼解」之前,先確定我們有沒有「真的看見問題的全貌」。把六個視角的角色都請到桌邊,由上到下、由底到外把議題攤開,讓每個角色的話被聽見、被接住。
+          </p>
+          <ul class="method-keypoints">
+            <li>建立全局觀:沒有遺漏的視角</li>
+            <li>接住每個角色:沒有人被排除</li>
+            <li>產出:重新定義過的題目</li>
+          </ul>
+        </div>
+        <div class="method-bridge"></div>
+        <div class="method-col afternoon">
+          <div class="method-time">PM · Afternoon</div>
+          <h3 class="method-headline">改變人</h3>
+          <p class="method-purpose">
+            目的:用早上重新定義過的題目,搭配 HMW 提問與「減少發生的故事」,讓現場每個角色都從「捍衛立場」轉成「共同創造」。改變的不是別人,而是會議桌上每一個人對問題的想像。
+          </p>
+          <ul class="method-keypoints">
+            <li>HMW 提問:把問題打開成創造空間</li>
+            <li>故事啟發:從個案到社會的可能</li>
+            <li>產出:多元、可落地的行動方向</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 上午:全局觀矩陣 -->
+  <section class="section morning-section">
+    <div class="wrap">
+      <span class="section-tag">02 — 上午|了解人</span>
+      <h2 class="section-title">從六個視角,建立由上到下、由底到外的全局觀</h2>
+      <p class="section-lead">
+        以「酒駕毒駕重刑」為例,我們刻意安排六個視角,讓會議從「立場辯論」轉成「事實澄清」。縱軸是制度的層級(從個人經驗→系統執行→制度頂層),橫軸是觀點的性質(理性結構 vs 經驗真實)。六個視角填滿這張矩陣,沒有人能說「我的角度沒被聽到」。
+      </p>
+
+      <div class="x-axis-labels">
+        <div class="x-label">理性結構 ▸ 制度與學理</div>
+        <div class="x-label">經驗真實 ▸ 現場與感受</div>
+      </div>
+
+      <div class="axis-frame">
+        <div class="y-label-set">
+          <div class="y-tier-block">
+            <div class="y-tier">制度頂層</div>
+            <div class="y-tier-desc">由上</div>
+          </div>
+          <div class="y-tier-block">
+            <div class="y-tier">系統執行</div>
+            <div class="y-tier-desc">中介</div>
+          </div>
+          <div class="y-tier-block">
+            <div class="y-tier">個人經驗</div>
+            <div class="y-tier-desc">由底</div>
+          </div>
+        </div>
+
+        <div class="matrix">
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 01 · 制度頂層 / 結構</div>
+            <div class="pc-title">憲法限制觀點</div>
+            <div class="pc-desc">重刑與死刑的修法,要過憲法法庭這一關。罪刑相當原則、比例原則、生命權保障——這些不是「妨礙正義」,而是定義了正義能走多遠的紅線。</div>
+            <div class="pc-catch"><strong>接住誰</strong>憲法學者、司法院、人權公約團體</div>
+          </div>
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 02 · 制度頂層 / 經驗</div>
+            <div class="pc-title">學者法律設計觀點</div>
+            <div class="pc-desc">「視同蓄意謀殺」在刑法理論上是否成立?故意與過失的界線、刑罰擬制的合理性——這是把素樸正義感放進專業概念體系裡檢驗的一步。</div>
+            <div class="pc-catch"><strong>接住誰</strong>刑法學者、司改會、法律實務者</div>
+          </div>
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 03 · 系統執行 / 結構</div>
+            <div class="pc-title">法務政策演進觀點</div>
+            <div class="pc-desc">刑法 185-3 條近十年已修法多次,每次加重後的累再犯數據如何變化?讓歷史說話,把「直覺修重刑就能解決」的假設拿到證據面前檢驗。</div>
+            <div class="pc-catch"><strong>接住誰</strong>法務部、刑事政策研究者</div>
+          </div>
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 04 · 系統執行 / 經驗</div>
+            <div class="pc-title">警力執行狀況觀點</div>
+            <div class="pc-desc">毒駕快篩誤差、警力訓練、與酒測的時間落差——再嚴的法,如果現場執行不上來,等於沒有。讓最靠近現場的人說出落地的真實。</div>
+            <div class="pc-catch"><strong>接住誰</strong>警政署、第一線員警</div>
+          </div>
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 05 · 個人經驗 / 結構</div>
+            <div class="pc-title">衛福成癮行為觀點</div>
+            <div class="pc-desc">多數重複酒駕者其實是酒精使用障礙(AUD)患者。把這層醫學底層拉出來,讓會議從「壞人 vs 好人」轉成「疾病也是社會問題」。</div>
+            <div class="pc-catch"><strong>接住誰</strong>衛福部心健司、成癮醫學專家</div>
+          </div>
+          <div class="perspective-card">
+            <div class="pc-num">PERSPECTIVE 06 · 個人經驗 / 經驗</div>
+            <div class="pc-title">受害者家屬觀點</div>
+            <div class="pc-desc">「我女兒就是這樣沒了」——這句話沒有人能反駁,也不該反駁。情感正義是這場會議的核心動力,但要被引導成「不要再發生」,而不只是「報復」。</div>
+            <div class="pc-catch"><strong>接住誰</strong>受害者家屬、酒駕防制協會</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="axis-note">
+        <strong>為什麼是這六個視角?</strong> 因為它同時覆蓋了縱向(由上到下:憲法→政策→個人)與橫向(由底到外:現場執行→醫學底層→學理建構→憲法外殼)的全局。少了任何一個,會議都會被某一方批評為「沒接住我們」。
+      </div>
+    </div>
+  </section>
+
+  <!-- 轉折 Reframe -->
+  <section class="bridge">
+    <div class="bridge-inner">
+      <span class="bridge-stamp">中午轉折|Reframe</span>
+      <h2 class="section-title" style="font-size: clamp(26px, 3.8vw, 38px); margin-bottom: 12px;">
+        上午的結束,是把題目重新定義
+      </h2>
+      <p style="color: var(--text); font-size: 16px; max-width: 640px; margin: 0 auto;">
+        當六個視角都被接住,我們發現大家真正在乎的不是「該不該加重其刑」,而是更上游的那個問題——
+      </p>
+
+      <div class="bridge-from-to">
+        <div class="bridge-box from">
+          <div class="bridge-box-label">原始提案</div>
+          <div class="bridge-box-text">「該不該<br>加重其刑到死刑?」</div>
+        </div>
+        <div class="bridge-arrow">⟶</div>
+        <div class="bridge-box to">
+          <div class="bridge-box-label">重新定義後</div>
+          <div class="bridge-box-text">「如何讓這件事<br>不再發生?」</div>
+        </div>
+      </div>
+
+      <p class="bridge-why">
+        這個 reframe 是協作會議最關鍵的一步——它讓現場每個人從「捍衛自己的立場」轉成「面對共同的問題」。下午所有的討論,都從這個新題目出發。
+      </p>
+    </div>
+  </section>
+
+  <!-- 下午 HMW + 故事 -->
+  <section class="section afternoon-section">
+    <div class="wrap">
+      <span class="section-tag">03 — 下午|改變人</span>
+      <h2 class="section-title">用 HMW 提問與「減少發生的故事」造成影響</h2>
+      <p class="section-lead">
+        下午的目的不是逼誰改變立場,而是讓每個人對問題的想像被打開。我們用兩個工具:把重新定義的題目拆成幾個 HMW(How Might We)問句,讓討論從「對立」轉成「創造」;再用世界上「減少發生的故事」當啟發,讓現場看見此地之外的可能。
+      </p>
+
+      <div class="stage-grid">
+        <div>
+          <h3 class="stage-block-title">
+            <span class="badge">PM · 1</span>
+            HMW 提問:把題目拆成可創造的問句
+          </h3>
+          <p class="stage-block-desc">
+            把「如何讓這件事不再發生」拆成幾個更具體的方向,每個方向都從不同角色的視角出發,讓上午的觀點都能找到對應的著力點。
+          </p>
+          <div class="hmw-grid">
+            <div class="hmw-card">
+              <div class="hmw-tag">HMW · 01</div>
+              <div class="hmw-q">如何讓「想酒駕的人」連車都發動不了?</div>
+              <div class="hmw-hint">科技端的著力:酒精鎖、車輛電子監控、生物辨識的可能性。</div>
+            </div>
+            <div class="hmw-card">
+              <div class="hmw-tag">HMW · 02</div>
+              <div class="hmw-q">如何讓累犯不只是被罰,而是被治療?</div>
+              <div class="hmw-hint">醫療端的著力:強制戒癮療程、緩起訴附條件、心理健康支持。</div>
+            </div>
+            <div class="hmw-card">
+              <div class="hmw-tag">HMW · 03</div>
+              <div class="hmw-q">如何讓受害者家屬真的得到他們需要的支持?</div>
+              <div class="hmw-hint">制度端的著力:被害人保護、民事求償結構、保險制度補強。</div>
+            </div>
+            <div class="hmw-card">
+              <div class="hmw-tag">HMW · 04</div>
+              <div class="hmw-q">如何讓整個社會把「同行酒駕」當成共犯?</div>
+              <div class="hmw-hint">文化端的著力:同行責任、餐廳責任、社會規範的重塑。</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="stage-block-title">
+            <span class="badge">PM · 2</span>
+            減少發生的故事:他鄉如何做到的
+          </h3>
+          <p class="stage-block-desc">
+            當大家在自己的框架裡卡住時,把世界上「真的減少了發生」的案例攤開,通常會打開新的可能性。下面是三個可作為靈感的故事。
+          </p>
+          <div class="story-grid">
+            <article class="story-card">
+              <div class="story-banner"><span>STORY · 01</span><span>SWEDEN</span></div>
+              <div class="story-body">
+                <h4 class="story-title">瑞典 Vision Zero:把交通死亡視為設計失敗</h4>
+                <p class="story-desc">瑞典 1997 年立法,把每一起交通死亡視為「道路設計的失敗」,而非「駕駛人的個人錯誤」。三十年來死亡率降到全球最低之一。</p>
+                <div class="story-takeaway">
+                  <strong>啟發</strong>
+                  把責任從個人移轉到系統,讓設計師、立法者、執法者共同承擔。
+                </div>
+              </div>
+            </article>
+            <article class="story-card">
+              <div class="story-banner"><span>STORY · 02</span><span>JAPAN</span></div>
+              <div class="story-body">
+                <h4 class="story-title">日本「同乘加罰」:把社會壓力寫進法律</h4>
+                <p class="story-desc">2007 年起,提供酒給酒駕者、搭乘酒駕車輛的人,都會被刑事處罰。讓「不阻止」也成為共犯,改變整個聚會文化。</p>
+                <div class="story-takeaway">
+                  <strong>啟發</strong>
+                  法律可以重塑社會規範,而不只是事後懲罰。
+                </div>
+              </div>
+            </article>
+            <article class="story-card">
+              <div class="story-banner"><span>STORY · 03</span><span>CALIFORNIA</span></div>
+              <div class="story-body">
+                <h4 class="story-title">加州酒精鎖:讓再犯在物理上不可能</h4>
+                <p class="story-desc">加州自 2019 年起,所有酒駕定罪者一律強制安裝酒精鎖(IID),六個月起跳。再犯率下降約 70%,而成本由駕駛人自負。</p>
+                <div class="story-takeaway">
+                  <strong>啟發</strong>
+                  與其加重「事後懲罰」,不如直接讓「事前發生」變得不可能。
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="section why-section">
+    <div class="wrap">
+      <span class="section-tag">04 — 為什麼這結構有效</span>
+      <h2 class="section-title">這不只是會議流程,是一套「不被單一情緒綁架」的設計</h2>
+      <p class="section-lead">
+        協作會議經常被質疑「溫吞」、「沒結論」。但它的價值正在於:它不是用來表決誰勝出,而是用來確保<strong>沒有人被忽略、沒有觀點被遺漏、沒有解法被預先排除</strong>。下面是這套結構的四個關鍵價值。
+      </p>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-num">01</div>
+          <div class="why-title">全局觀:沒有遺漏的視角</div>
+          <div class="why-desc">六個視角覆蓋縱向(個人→系統→制度)與橫向(理性結構 vs 經驗真實),確保不會偏聽。會後沒有人能說:「我們這方沒被聽見。」</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">02</div>
+          <div class="why-title">接住每個角色:情感與專業都有位子</div>
+          <div class="why-desc">受害者的情感、學者的理性、現場的實務,都有專屬的卡位。這讓「情緒被消音」或「專業壓過經驗」的失衡不會發生。</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">03</div>
+          <div class="why-title">重新定義題目:跳出二元對立</div>
+          <div class="why-desc">上午結束時的 reframe,是會議最重要的產出。它把「該不該」這種立場題,轉成「怎麼辦」這種共創題,讓下午有真正的空間。</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">04</div>
+          <div class="why-title">HMW + 故事:從問題到創造的躍遷</div>
+          <div class="why-desc">HMW 拆解出可著力的方向,故事提供超越本地框架的想像。兩者結合,讓會議的產出不是妥協方案,而是多元可能性。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="ft-brand">協作會議結構提案</div>
+      <div style="margin-top: 8px; color: rgba(255,255,255,0.6); font-size: 13px;">
+        Page 1 · 當天現場 (情境模擬 + 服務藍圖)  ·  Page 2 · 結構方法論
+      </div>
+    </div>
+    <div class="ft-meta">
+      提案文件 · 給國家發展委員會<br>
+      Case Study · 酒駕重刑議題<br>
+      Method · 了解人 → 改變人
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 分頁切換
+  function goToPage(n) {
+    document.querySelectorAll('.page-tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelector('.page-tabs button[data-page="' + n + '"]').classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + n).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('.page-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => goToPage(btn.dataset.page));
+  });
+</script>
+
+</body>
+</html>
