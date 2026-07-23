@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>致遠知識聯邦 · State of the Federation</title>
+<style>
+  /* ============ 聯邦設計系統 ============ */
+  /* 世界觀：每個專案是一座成員城。有人維護＝亮燈（暖金）；久沒人進＝城燈轉冷（藍灰）。
+     城樓越高＝內容越厚。中央是首都，收藏所有驗證過、能跨案重用的原則。
+     比個人「城邦」更正式：這是聯邦、是可以給長官看的施政報告。 */
+  :root{
+    --ink:#0a0e17;            /* 夜空 · 底 */
+    --ink-2:#0f1521;
+    --ground:#141c2b;
+    --panel:#131b2a;
+    --seal:#c9a24e;          /* 印信金 · 主色 */
+    --seal-bright:#e7c877;
+    --parch:#eef1f4;         /* 羊皮紙白 · 文字 */
+    --muted:#8b94a6;
+    --muted-2:#5f6a7e;
+    --line:rgba(201,162,78,0.16);
+    /* 暖＝有人住；冷＝沒人住 */
+    --lit-5:#f4d16b; --lit-4:#e6b24d; --warm-3:#c58f43;
+    --cold-2:#5f6c82; --cold-1:#45506680; --empty-0:#2a3444;
+    --ok:#79b06f; --warn:#d68f45; --alert:#d76a55;
+    --route:rgba(201,162,78,0.55);
+    --font-display:"Noto Serif TC","Songti TC","Source Han Serif TC",serif;
+    --font-body:"Noto Sans TC","PingFang TC","Heiti TC",system-ui,sans-serif;
+    --font-num:"SFMono-Regular",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--parch);font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;line-height:1.7}
+  body{
+    background:
+      radial-gradient(ellipse 60% 45% at 50% -6%, rgba(201,162,78,0.10), transparent),
+      radial-gradient(ellipse 50% 40% at 88% 108%, rgba(95,108,130,0.12), transparent),
+      var(--ink);
+    min-height:100vh;padding:clamp(16px,3vw,44px);
+  }
+  .wrap{max-width:1200px;margin:0 auto}
+
+  /* ---- 頁首 ---- */
+  header.masthead{text-align:center;padding:6px 0 20px;position:relative}
+  .emblem{width:52px;height:52px;margin:0 auto 14px;display:block}
+  .kicker{font-size:.76rem;letter-spacing:.44em;color:var(--seal);text-transform:uppercase;margin-bottom:12px;font-family:var(--font-body)}
+  h1.title{font-family:var(--font-display);font-weight:700;
+    font-size:clamp(2rem,4.6vw,3.4rem);letter-spacing:.06em;line-height:1.1}
+  .subtitle{color:var(--muted);margin-top:14px;font-size:1.0rem;max-width:640px;margin-left:auto;margin-right:auto}
+  .as-of{margin-top:10px;font-size:.8rem;color:var(--muted-2);font-family:var(--font-display);letter-spacing:.1em}
+
+  /* ---- 數據條 ---- */
+  .stats{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:26px 0 6px}
+  .stat{background:rgba(255,255,255,0.025);border:1px solid var(--line);border-radius:12px;
+    padding:13px 20px;min-width:128px;text-align:center;position:relative;overflow:hidden}
+  .stat::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--seal),transparent);opacity:.5}
+  .stat .num{font-family:var(--font-display);font-size:1.85rem;font-weight:700;color:var(--seal-bright);line-height:1}
+  .stat .num.zero{color:var(--muted-2)}
+  .stat .lbl{font-size:.73rem;color:var(--muted);margin-top:7px;letter-spacing:.04em}
+
+  /* ---- 視角切換 ---- */
+  .modes{display:flex;gap:8px;justify-content:center;margin:24px 0 4px;flex-wrap:wrap}
+  .mode-btn{font-family:var(--font-body);cursor:pointer;background:transparent;
+    border:1.5px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:9px 20px;font-size:.9rem;transition:.18s;display:flex;flex-direction:column;align-items:center;gap:1px}
+  .mode-btn b{color:var(--parch);font-size:.94rem;font-weight:600;letter-spacing:.02em}
+  .mode-btn small{font-size:.7rem;color:var(--muted)}
+  .mode-btn:hover{border-color:var(--seal)}
+  .mode-btn.active{border-color:var(--seal);background:rgba(201,162,78,0.10)}
+  .mode-btn.active b{color:var(--seal-bright)}
+
+  /* ---- 地圖 ---- */
+  .map-shell{position:relative;margin:16px 0 8px;border-radius:18px;overflow:hidden;
+    border:1px solid var(--line);background:linear-gradient(180deg,#0e1420,#090d15)}
+  svg.federation{display:block;width:100%;height:auto}
+  .plot{cursor:pointer;transition:.22s}
+  .plot:hover{filter:brightness(1.16)}
+  .plot-label{font-family:var(--font-display);fill:var(--parch);font-size:15px;font-weight:600;letter-spacing:.03em;pointer-events:none}
+  .plot-sub{fill:var(--muted);font-size:10px;pointer-events:none;font-family:var(--font-body)}
+  .cap-label{font-family:var(--font-display);fill:var(--seal-bright);font-size:14px;letter-spacing:.14em;pointer-events:none;font-weight:700}
+  .route-label{fill:var(--seal);font-size:9.5px;letter-spacing:.08em;font-family:var(--font-body);opacity:.72;pointer-events:none}
+  .map-legend{position:absolute;left:14px;bottom:12px;background:rgba(10,14,23,.82);
+    border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:.71rem;color:var(--muted);backdrop-filter:blur(4px)}
+  .map-legend .row{display:flex;align-items:center;gap:7px;margin:3px 0}
+  .map-legend .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .map-note{position:absolute;right:14px;top:12px;background:rgba(10,14,23,.72);border:1px solid var(--line);
+    border-radius:8px;padding:6px 11px;font-size:.7rem;color:var(--muted);max-width:220px;backdrop-filter:blur(4px)}
+
+  /* 活躍度視角：非本週異動的城變半透明 */
+  .lens-active .plot:not(.hot){opacity:.34}
+  /* 規劃師視角：非「該巡」的城變暗 */
+  .lens-plan .plot:not(.patrol){opacity:.32}
+  .lens-plan .patrol-ring{opacity:1 !important}
+  .patrol-ring{opacity:0;transition:.3s}
+
+  /* ---- 區段標頭 ---- */
+  .sec{margin:48px 0 8px}
+  .sec-head{text-align:center;margin-bottom:26px}
+  .sec-head .kicker{margin-bottom:8px}
+  .sec-head h2{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;letter-spacing:.04em}
+  .sec-head p{color:var(--muted);font-size:.92rem;margin-top:8px;max-width:600px;margin-left:auto;margin-right:auto}
+
+  /* ---- Dashboard 城卡 ---- */
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.01));
+    border:1px solid var(--line);border-radius:14px;padding:18px 19px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+  .card:hover{border-color:var(--seal);transform:translateY(-2px)}
+  .card.hot{border-color:rgba(244,209,107,0.4)}
+  .card .flame{position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;
+    filter:blur(30px);opacity:.5;pointer-events:none}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;position:relative}
+  .card h3{font-family:var(--font-display);font-size:1.22rem;font-weight:700;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+  .card .ctype{font-size:.72rem;color:var(--muted);margin-top:2px}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .metrics{display:flex;gap:20px;margin:14px 0 6px;position:relative}
+  .metric .m-num{font-family:var(--font-display);font-size:1.55rem;font-weight:700;line-height:1}
+  .metric .m-lbl{font-size:.68rem;color:var(--muted);margin-top:3px;letter-spacing:.03em}
+  .card .insights{margin-top:10px;border-top:1px solid var(--line);padding-top:11px}
+  .card .insights .ih{font-size:.7rem;color:var(--seal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  .card .insights li{font-size:.86rem;color:#cfd4dd;list-style:none;padding:3px 0 3px 16px;position:relative;line-height:1.5}
+  .card .insights li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--seal)}
+  .card .quote{font-family:var(--font-display);font-style:italic;font-size:.9rem;color:var(--seal-bright);
+    border-left:2px solid var(--seal);padding:2px 0 2px 12px;margin-top:9px;line-height:1.6}
+  .card .dormant-note{font-size:.82rem;color:var(--muted);margin-top:10px;border-top:1px solid var(--line);padding-top:10px;line-height:1.55}
+
+  /* ---- 首都中樞 ---- */
+  .capital{background:linear-gradient(180deg,rgba(201,162,78,0.07),rgba(201,162,78,0.02));
+    border:1px solid rgba(201,162,78,0.3);border-radius:16px;padding:26px 26px 22px;position:relative;overflow:hidden}
+  .capital::before{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,78,0.14),transparent 70%)}
+  .capital .cap-title{font-family:var(--font-display);font-size:1.4rem;font-weight:700;letter-spacing:.04em;position:relative}
+  .capital .cap-mission{font-family:var(--font-display);font-style:italic;color:var(--seal-bright);font-size:1.05rem;margin:8px 0 4px;position:relative}
+  .capital .cap-desc{color:var(--muted);font-size:.9rem;max-width:640px;position:relative}
+  .inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px;margin-top:20px;position:relative}
+  .inst{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+  .inst .in-nm{font-size:.92rem;font-weight:600;color:var(--parch);display:flex;align-items:center;gap:7px}
+  .inst .in-ds{font-size:.76rem;color:var(--muted);margin-top:4px;line-height:1.5}
+  .inst .in-badge{font-size:.68rem;color:var(--seal);margin-top:6px;font-family:var(--font-num)}
+  .bridge-box{margin-top:18px;background:rgba(255,255,255,.025);border:1px dashed rgba(201,162,78,0.4);border-radius:12px;padding:15px 17px;position:relative}
+  .bridge-box .bb-h{font-size:.86rem;color:var(--seal-bright);font-weight:600;display:flex;align-items:center;gap:8px}
+  .bridge-box li{list-style:none;font-size:.85rem;color:#cfd4dd;padding:5px 0 5px 18px;position:relative}
+  .bridge-box li::before{content:"⤳";position:absolute;left:0;top:5px;color:var(--seal);font-size:.85rem}
+  .bridge-box .bb-note{font-size:.76rem;color:var(--muted);margin-top:8px}
+
+  /* ---- 大事記 ---- */
+  .timeline{position:relative;max-width:860px;margin:0 auto;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(180deg,var(--seal),transparent)}
+  .tl{position:relative;margin-bottom:22px}
+  .tl::before{content:"";position:absolute;left:-30px;top:5px;width:14px;height:14px;border-radius:50%;
+    background:var(--ink);border:2px solid var(--seal)}
+  .tl.milestone::before{background:var(--lit-4);box-shadow:0 0 12px var(--lit-4)}
+  .tl .date{font-family:var(--font-num);font-size:.78rem;color:var(--seal);letter-spacing:.06em}
+  .tl .event{font-size:.95rem;color:var(--parch);margin-top:2px}
+  .tl .event .city{color:var(--seal-bright);font-weight:600}
+  .tl .event .tag{font-size:.74rem;color:var(--muted)}
+
+  /* ---- 增量圖例 ---- */
+  .inc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:10px;margin-top:6px}
+  .inc{background:rgba(255,255,255,.028);border:1px solid var(--line);border-radius:11px;padding:13px 15px;display:flex;gap:12px;align-items:flex-start}
+  .inc .em{font-size:1.3rem;line-height:1.1}
+  .inc .tx b{display:block;font-size:.9rem;color:var(--parch);font-weight:600;margin-bottom:1px}
+  .inc .tx span{font-size:.79rem;color:var(--muted)}
+
+  footer.foot{text-align:center;color:var(--muted);font-size:.82rem;margin-top:48px;padding-top:22px;border-top:1px solid var(--line);line-height:1.85}
+  footer.foot b{color:var(--seal);font-weight:600}
+
+  /* ---- 細節面板 ---- */
+  .panel{position:fixed;top:0;right:0;height:100%;width:min(460px,93vw);
+    background:linear-gradient(180deg,#131b2a,#0c111b);border-left:1px solid var(--seal);
+    box-shadow:-20px 0 60px rgba(0,0,0,.55);transform:translateX(100%);transition:.34s cubic-bezier(.16,1,.3,1);
+    z-index:50;overflow-y:auto;padding:30px 28px 54px}
+  .panel.open{transform:translateX(0)}
+  .panel .close{position:absolute;top:18px;right:20px;cursor:pointer;color:var(--muted);
+    font-size:1.5rem;background:none;border:none;line-height:1}
+  .panel .close:hover{color:var(--parch)}
+  .panel .p-kicker{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--seal);font-family:var(--font-num)}
+  .panel h2{font-family:var(--font-display);font-size:1.75rem;font-weight:700;margin:6px 0 3px;letter-spacing:.03em}
+  .panel .p-status{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;padding:6px 12px;border-radius:999px;margin:6px 0 14px}
+  .panel .meaning{font-family:var(--font-display);font-size:1.02rem;color:var(--parch);font-style:italic;
+    border-left:2px solid var(--seal);padding:4px 0 4px 14px;margin:6px 0 6px;line-height:1.65}
+  .panel h3{font-family:var(--font-display);font-size:.98rem;color:var(--seal);margin:20px 0 7px;letter-spacing:.05em;
+    border-bottom:1px solid var(--line);padding-bottom:5px}
+  .panel ul{list-style:none}
+  .panel li{font-size:.9rem;color:#cfd4dd;padding:5px 0 5px 18px;position:relative;line-height:1.55}
+  .panel li::before{content:"";position:absolute;left:2px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--seal)}
+  .panel li.warn::before{background:var(--warn)}
+  .panel .pq{font-family:var(--font-display);font-style:italic;color:var(--seal-bright);border-left:2px solid var(--seal);padding:3px 0 3px 12px;margin:8px 0;font-size:.92rem;line-height:1.6}
+
+  @media(max-width:560px){
+    .stat{min-width:100px;padding:11px 14px}
+    .stat .num{font-size:1.45rem}
+    .mode-btn{padding:7px 14px}
+    .metrics{gap:14px}
+  }
+</style>
+</head>
+<body data-lens="all">
+<div class="wrap">
+
+  <header class="masthead">
+    <svg class="emblem" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="24" stroke="var(--seal)" stroke-width="1.4" opacity=".6"/>
+      <circle cx="26" cy="26" r="18" stroke="var(--seal)" stroke-width="1" opacity=".35"/>
+      <path d="M26 9 L30.5 21 L43 22 L33 30 L36 43 L26 36 L16 43 L19 30 L9 22 L21.5 21 Z" fill="var(--seal)" opacity=".85"/>
+    </svg>
+    <div class="kicker">State of the Federation</div>
+    <h1 class="title">致遠知識聯邦</h1>
+    <p class="subtitle">每個專案是一座成員城。有人維護就<b style="color:var(--lit-5)">亮燈</b>，久沒人進城燈就<b style="color:var(--cold-2)">轉冷</b>；城樓越高，累積越厚。中央是<b style="color:var(--seal)">首都</b>——收藏所有驗證過、能跨案重用的原則。</p>
+    <div class="as-of" id="asOf"></div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="modes">
+    <button class="mode-btn active" data-lens="all"><b>聯邦全景</b><small>俯瞰整片疆域</small></button>
+    <button class="mode-btn" data-lens="active"><b>本週活躍</b><small>誰在動、誰在冷</small></button>
+    <button class="mode-btn" data-lens="plan"><b>規劃師巡城</b><small>哪座城該巡了</small></button>
+  </div>
+
+  <div class="map-shell">
+    <svg class="federation" viewBox="0 0 1080 660" xmlns="http://www.w3.org/2000/svg" id="fedSvg">
+      <defs>
+        <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="capGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="rgba(231,200,119,0.55)"/><stop offset="100%" stop-color="rgba(231,200,119,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 疆域底紋：等高線暗示 -->
+      <g opacity="0.35" stroke="rgba(201,162,78,0.10)" fill="none" stroke-width="1">
+        <path d="M60 120 q120 -30 260 6 t320 -6 t360 12"/>
+        <path d="M40 560 q160 26 340 -6 t340 8 t360 -14"/>
+        <ellipse cx="540" cy="330" rx="360" ry="250"/>
+      </g>
+
+      <!-- 貿易 / 過橋航線（畫在城之下） -->
+      <g id="routes"></g>
+
+      <!-- 首都：中央中樞 -->
+      <g id="capital" class="plot" data-id="capital">
+        <circle cx="540" cy="326" r="86" fill="url(#capGlow)"/>
+        <circle cx="540" cy="326" r="58" fill="rgba(20,28,43,0.9)" stroke="var(--seal)" stroke-width="2"/>
+        <circle cx="540" cy="326" r="66" fill="none" stroke="rgba(201,162,78,0.4)" stroke-width="1" stroke-dasharray="2 5"/>
+        <!-- 中樞星徽 -->
+        <path d="M540 296 L548 320 L573 320 L553 336 L561 360 L540 345 L519 360 L527 336 L507 320 L532 320 Z" fill="var(--seal-bright)" opacity=".92"/>
+        <text x="540" y="404" text-anchor="middle" class="cap-label">首　都　·　聯　邦　中　樞</text>
+        <text x="540" y="420" text-anchor="middle" class="plot-sub" fill="var(--seal)">公司wiki · 活的 playbook</text>
+      </g>
+
+      <!-- 成員城 由 JS 注入 -->
+      <g id="cities"></g>
+
+      <!-- 城史紀念區（已結案） -->
+      <g class="plot" data-id="chronicle-ground">
+        <rect x="70" y="556" width="120" height="66" rx="8" fill="rgba(201,162,78,0.05)" stroke="var(--cold-1)" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <path d="M112 606 L116 574 L134 574 L138 606 Z" fill="rgba(201,162,78,0.35)" stroke="var(--cold-2)" stroke-width="1"/>
+        <text x="130" y="640" text-anchor="middle" class="plot-sub" fill="var(--cold-2)">城史區 · 已結案</text>
+      </g>
+    </svg>
+
+    <div class="map-note">城的<b style="color:var(--parch)">高度</b>＝內容厚度；<b style="color:var(--lit-5)">暖光</b>＝本季有人維護；<b style="color:var(--cold-2)">冷灰</b>＝久未進城。金線＝跨城航線。</div>
+    <div class="map-legend">
+      <div class="row"><span class="dot" style="background:var(--lit-5)"></span>燈火通明 · 本週在動</div>
+      <div class="row"><span class="dot" style="background:var(--warm-3)"></span>亮著 · 近月維護過</div>
+      <div class="row"><span class="dot" style="background:var(--cold-2)"></span>轉冷 · 一兩月沒人進</div>
+      <div class="row"><span class="dot" style="background:var(--empty-0)"></span>沉睡 · 大城但已熄燈</div>
+    </div>
+  </div>
+
+  <!-- 本週施政報告 -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="kicker">Weekly Report</div>
+      <h2>本週施政報告 · 各成員城</h2>
+      <p>依本週活躍度排序。點任一城看完整檔案。冷掉的城不是失敗——是提醒「該有人回去巡了」。</p>
+    </div>
+    <div class="city-grid" id="cityGrid"></div>
+  </section>
+
+  <!-- 首都中樞 -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="kicker">The Capital</div>
+      <h2>首都 · 聯邦中樞</h2>
+      <p>成員城各自為政，但驗證過的原則要送進首都，才會被下一個案子重用。這裡是「過橋」的終點。</p>
+    </div>
+    <div class="capital" id="capitalBox"></div>
+  </section>
+
+  <!-- 大事記 -->
+  <section class="sec">
+    <div class="sec-head"><div class="kicker">Federation Chronicle</div><h2>聯邦本週大事記</h2></div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- 增量圖例 -->
+  <section class="sec">
+    <div class="sec-head"><div class="kicker">Federation Vocabulary</div><h2>每個動作，聯邦裡發生什麼</h2>
+      <p>把日常的 wiki 動作，翻成大家看得懂、也想做的一件事。</p></div>
+    <div class="inc-grid" id="incGrid"></div>
+  </section>
+
+  <footer class="foot">
+    這頁是 <b>聯邦中樞視角</b>的快照，反映 <span id="footDate"></span> 的疆域狀態（依各專案資料夾的真實更新時間掃描）。<br>
+    疆域會繼續長——當某座城收了新的 raw、產出新的洞察、或有一件原則過橋進首都，<b>叫我重新掃一次，地圖就會跟著亮</b>。<br>
+    <a href="知識聯邦-入口.html" style="color:var(--seal-bright)">← 回聯邦門廳</a>　·　<a href="服務藍圖貢獻軸-Dashboard.html" style="color:var(--seal-bright)">看服務大道 · 貢獻軸 →</a>
+  </footer>
+
+</div>
+
+<!-- 細節面板 -->
+<aside class="panel" id="panel">
+  <button class="close" id="closePanel">×</button>
+  <div class="p-kicker" id="pKicker"></div>
+  <h2 id="pName"></h2>
+  <div class="p-status" id="pStatus"></div>
+  <div class="meaning" id="pMeaning"></div>
+  <div id="pBody"></div>
+</aside>
+
+<script>
+/* ====================== 聯邦資料模型 ======================
+   真實數據來源：公司AI-wiki 各專案資料夾（掃描日 2026-07-23）。
+   level 依「最後更新距今」：5=本週且量大 · 4=本週 · 3=近月 · 2=一兩月 · 1=兩月以上沉睡。
+   md=md 檔數（城樓高度）· week=近7天異動檔數（本週脈動）。
+   下次重新掃描資料夾，只要更新這個陣列即可。 */
+const ASOF = "2026-07-23";
+
+const CITIES = [
+  { id:"taipei-edu", name:"台北教育局城", type:"政府數位服務 · 官網 IA 改造", icon:"🏛️",
+    x:748, y:150, size:"XL", level:5, md:134, files:372, week:69, last:"2026-07-23", hot:true, patrol:false,
+    meaning:"聯邦本週的火車頭。15 科室訪談冶煉成命題證據索引，洞察與金句同時湧出——這就是『亮到發燙』的城。",
+    status:["ok","燈火通明 · 訪談分析爆發期（今日仍在動）"],
+    metrics:[["+69","本週異動"],["134","篇 md"],["473","筆命題證據"]],
+    insights:[
+      "15 科訪談索引全數建置完成，473 筆命題證據、quote 逐字比對 0 錯誤",
+      "跨訪談洞察第一輪：P01–P10 證據矩陣完成，H01（單軸線性排序）達門檻、建議升格 P11",
+      "執行眉角採收：用字禁忌、下架真相、權責眉角——11 科在地知識橫切",
+      "訪談分析使用說明 HTML 上線，供全案查詢"
+    ],
+    quotes:[
+      "不是沒人管，是沒規則可循——16 科各自發明自己的規則，就是全站沒有規則。",
+      "系統有下架鍵，制度沒有下架權。",
+      "內容留在網站上，理由跟著承辦人退休了。"
+    ],
+    body:{ "本週待致遠裁決":["P04『八成內容對學校』口徑修正是否採納並回寫座標系","H01 → P11 升格；H02 受眾三分是否升格或續觀察","66 個候選 tag 歸併（建議只收站內搜尋 / 權限帳號 / 關鍵字欄位三組跨科者）"],
+           "⚠️ 補件":["秘書室未訪歸檔、輔導團待歸檔、會計室紀錄僅 2k 字＋照片未 OCR"] } },
+
+  { id:"taoyuan-card", name:"桃園卡城 V2", type:"市民卡 2.0 · 科技執法整合", icon:"💳",
+    x:882, y:296, size:"M", level:4, md:35, files:63, week:5, last:"2026-07-22", hot:true, patrol:false,
+    meaning:"本週第二活躍的城。科技執法與市民卡整合的原礦剛靠岸，還在冶煉前段。",
+    status:["ok","亮著 · 新料入城（昨日更新）"],
+    metrics:[["+5","本週異動"],["35","篇 md"],["63","檔案"]],
+    insights:[
+      "科技執法市民卡整合系統流程簡報 v2 入城",
+      "1150716 市民卡 2.0 科技執法專案討論會議紀錄歸檔",
+      "0713 創新提案表（報局完成版）"
+    ],
+    quotes:[],
+    body:{ "現況":["原礦剛入港，尚未產出跨訪談級洞察。下一步是把會議紀錄與提案冶煉成發現。"] } },
+
+  { id:"sfa-v2", name:"商發署城 V2", type:"官網及入口網 · 服務藍圖", icon:"🌐",
+    x:840, y:474, size:"L", level:2, md:69, files:106, week:0, last:"2026-06-12", hot:false, patrol:true,
+    meaning:"厚實的大城，但已一個多月沒人進。第一輪彙整已送到首都的過橋驛站等裁決。",
+    status:["warn","轉冷 · 大城但近月無異動"],
+    metrics:[["0","本週異動"],["69","篇 md"],["41","天前最後更新"]],
+    insights:[],
+    quotes:[],
+    dormant:"內容量在聯邦排第二（69 篇），但最後更新停在 6/12。第一輪彙整已在首都『過橋驛站』待致遠裁決——這座城的貨備好了，等的是過橋那一下。",
+    body:{ "規劃師建議":["過橋候選已在驛站，優先安排一次結案 review","確認哪些原則可升級進首都憲章、供下個官網案重用"] } },
+
+  { id:"ntl", name:"國圖城", type:"國家圖書館專案", icon:"📖",
+    x:556, y:548, size:"L", level:1, md:68, files:78, week:0, last:"2026-05-05", hot:false, patrol:true,
+    meaning:"聯邦裡沉睡最久的大城——68 篇 md 的家底，卻兩個多月沒人進城。最該巡的一座。",
+    status:["alert","沉睡 · 大城已熄燈近 3 個月"],
+    metrics:[["0","本週異動"],["68","篇 md"],["79","天前最後更新"]],
+    insights:[],
+    quotes:[],
+    dormant:"家底厚（68 篇 md）但燈全暗了，最後更新 5/5。第一輪彙整同樣躺在首都過橋驛站。這是規劃師視角最刺眼的一座城：內容有價值，只差有人回來收尾、送過橋。",
+    body:{ "規劃師建議":["排一次巡城：把第一輪彙整推完、過橋進首都","評估是否轉入『城史區』結案，讓知識有記憶地封存"] } },
+
+  { id:"sfa-v1", name:"商發署舊城 V1", type:"官網及入口網（前身）", icon:"🗂️",
+    x:686, y:566, size:"M", level:1, md:28, files:39, week:0, last:"2026-05-13", hot:false, patrol:false,
+    meaning:"V2 的前身。棒子已交給旁邊的 V2 城，自己功成身退，燈自然轉暗。",
+    status:["muted","舊城 · 已由 V2 接棒"],
+    metrics:[["0","本週異動"],["28","篇 md"],["接棒","→ V2"]],
+    insights:[],
+    quotes:[],
+    dormant:"這座城的角色已被 V2 取代，冷掉是正常的世代交替。保留作為 V2 的歷史脈絡即可，不需巡。",
+    body:{ "現況":["與 V2 之間有一條『接棒』航線。舊城的價值是脈絡，不是待辦。"] } },
+
+  { id:"36join", name:"36Join 議事城", type:"協作會議 Wiki", icon:"🤝",
+    x:296, y:502, size:"M", level:3, md:26, files:44, week:0, last:"2026-06-28", hot:false, patrol:false,
+    meaning:"跨方協作會議的議事廳。近月維護過，燈還溫著。",
+    status:["ok","亮著 · 近月維護過"],
+    metrics:[["0","本週異動"],["26","篇 md"],["25","天前最後更新"]],
+    insights:[],
+    quotes:[],
+    body:{ "現況":["協作會議紀錄的城。維護節律穩定，暫無需特別處理。"] } },
+
+  { id:"gov-cert", name:"行動工商憑證城", type:"工商憑證數位服務", icon:"🪪",
+    x:150, y:378, size:"S", level:1, md:21, files:24, week:0, last:"2026-05-15", hot:false, patrol:false,
+    meaning:"小而完整的城。階段任務告一段落後轉入低度維護。",
+    status:["muted","微光 · 低度維護"],
+    metrics:[["0","本週異動"],["21","篇 md"],["69","天前最後更新"]],
+    insights:[],
+    quotes:[],
+    body:{ "現況":["規模較小、內容完整。若無新需求可維持現狀；有結案素材可考慮過橋。"] } },
+
+  { id:"colleagues-ai", name:"同事 AI 廣場", type:"999 · 同事們的 AI 產出", icon:"🏪",
+    x:224, y:184, size:"S", level:1, md:11, files:44, week:0, last:"2026-06-05", hot:false, patrol:false,
+    meaning:"聯邦的公共廣場——大家把各自的 AI 產出擺出來交流，不屬於單一案子。",
+    status:["muted","廣場 · 公共交流區"],
+    metrics:[["0","本週異動"],["11","篇 md"],["44","檔案"]],
+    insights:[],
+    quotes:[],
+    body:{ "現況":["這是市集不是專案城：鼓勵同事把好用的 AI 產出擺上來。人氣＝有人常來擺攤與逛。"] } },
+];
+
+/* 首都機構（真實對應 公司wiki 結構） */
+const CAPITAL = {
+  mission:"讓專案知識有記憶。",
+  desc:"不是凍結的規則本，是活的 playbook——原則寫下、被用、被執行者補充、被 review、再升級。致遠常是 first writer，資深合作者把『這次的發現』寫回回流關。",
+  insts:[
+    { nm:"📜 憲章 · 我們的原則", ds:"接案時要交代的主檔。下個新案會用到的階段，先寫起來。", badge:"接案時要交代的-下個案優先/" },
+    { nm:"🎯 品質雙靶", ds:"什麼算一條站得住的『發現』／什麼算記得住、可對外的『金句』。", badge:"2 份品質標準" },
+    { nm:"🗣️ 名言堂", ds:"結案專案提煉的洞察金句：草稿 → 致遠核 → 正式。", badge:"金句庫/" },
+    { nm:"🕊️ 使節館 · 演講區", ds:"對外演講，把 UX 翻成長官會點頭的避險語言。", badge:"演講區/" },
+    { nm:"↩️ 回流關", ds:"合作者跑完階段寫的補充與修正——不直接改原則，先進回流。", badge:"合作者的回流/" },
+    { nm:"🏗️ 進行案", ds:"連結到原則、但允許本案調整的活躍工地。", badge:"live-projects/" },
+  ],
+  bridge:[
+    "商發署 V2 · 第一輪彙整（2026-06-13）",
+    "國圖專案 · 第一輪彙整（2026-06-13）",
+    "服務藍圖產出——我們的原則（草稿）"
+  ]
+};
+
+/* 跨城航線 */
+const ROUTES = [
+  { from:[726,286], to:[600,326], kind:"method", label:"訪談索引法 · taxonomy", dash:false },   // 首都→台北教育局（方法輸出）
+  { from:[820,468], to:[598,330], kind:"bridge", label:"過橋候選", dash:true },                  // 商發署V2→首都
+  { from:[560,540], to:[540,392], kind:"bridge", label:"過橋候選", dash:true },                  // 國圖→首都
+  { from:[706,556], to:[812,472], kind:"succ", label:"接棒", dash:false },                        // 商發署V1→V2
+];
+
+/* ====================== 繪製地圖 ====================== */
+const NS="http://www.w3.org/2000/svg";
+const LITCOL = {5:"var(--lit-5)",4:"var(--lit-4)",3:"var(--warm-3)",2:"var(--cold-2)",1:"var(--empty-0)"};
+const SIZES = {XL:{w:96,h:70,t:3},L:{w:80,h:58,t:3},M:{w:64,h:46,t:2},S:{w:50,h:38,t:2}};
+function el(tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+
+/* 航線 */
+const routesG = document.getElementById("routes");
+ROUTES.forEach(r=>{
+  const mx=(r.from[0]+r.to[0])/2, my=(r.from[1]+r.to[1])/2 - 40;
+  const col = r.kind==="method"?"var(--seal-bright)":r.kind==="succ"?"var(--warm-3)":"var(--route)";
+  const p = el("path",{d:`M${r.from[0]} ${r.from[1]} Q ${mx} ${my} ${r.to[0]} ${r.to[1]}`,
+    fill:"none",stroke:col,"stroke-width":r.kind==="method"?2:1.6,
+    "stroke-dasharray":r.dash?"5 6":"1 0",opacity:r.kind==="method"?.6:.5});
+  routesG.appendChild(p);
+  const t = el("text",{x:mx,y:my+16,"text-anchor":"middle",class:"route-label"});
+  t.textContent=r.label; routesG.appendChild(t);
+});
+
+/* 城 */
+const citiesG = document.getElementById("cities");
+CITIES.forEach(c=>{
+  const S=SIZES[c.size], col=LITCOL[c.level];
+  const grp = el("g",{class:"plot"+(c.hot?" hot":"")+(c.patrol?" patrol":""),"data-id":c.id});
+  const cx=c.x+S.w/2, cy=c.y+S.h/2;
+
+  // 暖光（有人住才亮）／規劃師巡城環
+  if(c.level>=3){
+    grp.appendChild(el("circle",{cx,cy,r:Math.max(26,c.level*10),fill:col,opacity:(0.05+c.level*0.04).toFixed(2),filter:"url(#glow)"}));
+  }
+  if(c.patrol){
+    grp.appendChild(el("circle",{cx,cy,r:S.w*0.7,class:"patrol-ring",fill:"none",stroke:"var(--warn)","stroke-width":1.5,"stroke-dasharray":"4 5"}));
+  }
+
+  // 城台
+  grp.appendChild(el("rect",{x:c.x,y:c.y,width:S.w,height:S.h,rx:9,fill:"rgba(18,26,40,0.66)",stroke:col,"stroke-width":1.4}));
+
+  // 城樓（數量依 size，高度依 level 微調）
+  const tw=(S.w-16)/S.t;
+  for(let i=0;i<S.t;i++){
+    const th=S.h*0.55 + (i===Math.floor(S.t/2)?S.h*0.28:0);   // 中間樓最高
+    const bx=c.x+8+i*tw, by=c.y+S.h-th-4, bw=tw-6;
+    grp.appendChild(el("rect",{x:bx,y:by,width:bw,height:th,rx:3,fill:"rgba(12,17,27,0.92)",stroke:col,"stroke-width":1}));
+    grp.appendChild(el("path",{d:`M${bx-3} ${by} L${bx+bw/2} ${by-9} L${bx+bw+3} ${by} Z`,fill:col,opacity:.6}));
+    // 亮窗：暖城多亮，冷城幾乎不亮
+    const rows=2, cols=2;
+    for(let w=0;w<rows*cols;w++){
+      const wx=bx+5+(w%cols)*((bw-8)/cols), wy=by+7+Math.floor(w/cols)*((th-10)/rows);
+      const on = c.level>=3 ? (w < (c.level>=5?4:c.level>=4?3:2)) : (c.level===2 ? w<1 : false);
+      grp.appendChild(el("rect",{x:wx,y:wy,width:Math.max(4,(bw-8)/cols-3),height:Math.max(4,(th-10)/rows-3),rx:1,
+        fill:on?col:"rgba(255,255,255,0.05)",opacity:on?(c.level>=4?1:0.8):1}));
+    }
+  }
+
+  // 名稱
+  const t1=el("text",{x:cx,y:c.y+S.h+18,"text-anchor":"middle",class:"plot-label"});t1.textContent=c.name;grp.appendChild(t1);
+  const t2=el("text",{x:cx,y:c.y+S.h+32,"text-anchor":"middle",class:"plot-sub"});
+  t2.textContent = c.week>0 ? ("本週 +"+c.week) : (c.last.slice(5)+" 最後更新"); grp.appendChild(t2);
+
+  // 本週脈動徽章
+  if(c.week>0){
+    grp.appendChild(el("circle",{cx:c.x+S.w-6,cy:c.y+6,r:14,fill:"var(--lit-5)"}));
+    const b=el("text",{x:c.x+S.w-6,y:c.y+10,"text-anchor":"middle","font-size":"11","font-weight":"700",fill:"var(--ink)","font-family":"var(--font-num)"});
+    b.textContent="+"+c.week; grp.appendChild(b);
+  }
+
+  grp.addEventListener("click",()=>openCity(c));
+  citiesG.appendChild(grp);
+});
+document.getElementById("capital").addEventListener("click",openCapitalPanel);
+document.querySelector('[data-id="chronicle-ground"]').addEventListener("click",()=>{
+  openPanel({kicker:"公司wiki/已結案專案/",name:"城史區 · 已結案",statusColor:"var(--muted-2)",statusText:"封存 · 有記憶地退場",
+    meaning:"結案的城不會被刪，會遷入城史區——同事把結案報告丟進 raw，agent 整理成有脈絡的紀念館。",
+    html:"<h3>為什麼保留</h3><ul><li>『內容留在網站上，理由跟著承辦人退休了』——這正是本聯邦要對抗的事。</li><li>結案 ≠ 遺忘：把知識有記憶地封存，下個相似案子才調得出來。</li></ul>"});
+});
+
+/* ====================== 數據條 ====================== */
+const totalWeek = CITIES.reduce((s,c)=>s+c.week,0);
+const activeCnt = CITIES.filter(c=>c.week>0).length;
+const stats=[
+  {n:"+"+totalWeek,l:"本週聯邦新增"},
+  {n:activeCnt+" / "+CITIES.length,l:"活躍成員城"},
+  {n:CAPITAL.bridge.length,l:"過橋候選待裁"},
+  {n:CITIES.length,l:"成員城總數"},
+  {n:"30",l:"首都原則藏品"},
+];
+document.getElementById("stats").innerHTML = stats.map(s=>
+  `<div class="stat"><div class="num">${s.n}</div><div class="lbl">${s.l}</div></div>`).join("");
+document.getElementById("asOf").textContent = "聯邦快照 · "+ASOF;
+document.getElementById("footDate").textContent = ASOF;
+
+/* ====================== Dashboard 城卡 ====================== */
+const sorted = [...CITIES].sort((a,b)=> (b.week-a.week) || (b.level-a.level) || (b.md-a.md));
+const STC = {ok:"var(--ok)",warn:"var(--warn)",alert:"var(--alert)",muted:"var(--muted-2)"};
+document.getElementById("cityGrid").innerHTML = sorted.map(c=>{
+  const sc = STC[c.status[0]]||"var(--muted-2)";
+  const flame = c.level>=4?`<div class="flame" style="background:${LITCOL[c.level]}"></div>`:"";
+  const metrics = c.metrics.map(m=>`<div class="metric"><div class="m-num" style="color:${c.week>0?'var(--lit-5)':'var(--parch)'}">${m[0]}</div><div class="m-lbl">${m[1]}</div></div>`).join("");
+  let mid="";
+  if(c.insights && c.insights.length){
+    mid=`<div class="insights"><div class="ih">本週洞察</div><ul>${c.insights.slice(0,3).map(i=>`<li>${i}</li>`).join("")}</ul>`
+       + (c.quotes&&c.quotes.length?`<div class="quote">「${c.quotes[0]}」</div>`:"") + `</div>`;
+  } else if(c.dormant){
+    mid=`<div class="dormant-note">${c.dormant}</div>`;
+  }
+  return `<div class="card ${c.hot?'hot':''}" data-id="${c.id}">
+    ${flame}
+    <div class="card-top">
+      <div><h3>${c.icon} ${c.name}</h3><div class="ctype">${c.type}</div></div>
+      <span class="status-pill" style="border:1px solid ${sc};color:${sc};background:rgba(255,255,255,.03)">
+        <span style="width:7px;height:7px;border-radius:50%;background:${sc};display:inline-block"></span>${c.status[1]}</span>
+    </div>
+    <div class="metrics">${metrics}</div>
+    ${mid}
+  </div>`;
+}).join("");
+document.querySelectorAll("#cityGrid .card").forEach(el=>{
+  el.addEventListener("click",()=>openCity(CITIES.find(c=>c.id===el.dataset.id)));
+});
+
+/* ====================== 首都中樞 ====================== */
+document.getElementById("capitalBox").innerHTML = `
+  <div class="cap-title">🏛️ 致遠聯邦中樞 · 首都</div>
+  <div class="cap-mission">「${CAPITAL.mission}」</div>
+  <div class="cap-desc">${CAPITAL.desc}</div>
+  <div class="inst-grid">
+    ${CAPITAL.insts.map(i=>`<div class="inst"><div class="in-nm">${i.nm}</div><div class="in-ds">${i.ds}</div><div class="in-badge">${i.badge}</div></div>`).join("")}
+  </div>
+  <div class="bridge-box">
+    <div class="bb-h">🌉 過橋驛站 · 升級候選（${CAPITAL.bridge.length} 件待致遠裁決）</div>
+    <ul>${CAPITAL.bridge.map(b=>`<li>${b}</li>`).join("")}</ul>
+    <div class="bb-note">過橋＝把一座城驗證過的原則，正式收進首都憲章，供下一個案子重用。這是整個聯邦地位最高的動作。</div>
+  </div>`;
+
+/* ====================== 大事記 ====================== */
+const CHRON=[
+  {date:"2026-07-23",milestone:true,event:"<span class='city'>台北教育局城</span>：訪談分析使用說明 HTML 上線，全案可查詢。城燈今日仍亮。",tag:"output"},
+  {date:"2026-07-22",milestone:true,event:"<span class='city'>台北教育局城</span>：15 科訪談索引全數建置完成（473 筆命題證據 · 0 驗證錯誤）→ 跨訪談洞察與執行眉角採收第一輪出爐，湧出多條金句候選。",tag:"insight"},
+  {date:"2026-07-22",event:"<span class='city'>桃園卡城 V2</span>：科技執法市民卡整合系統流程簡報 v2 與會議紀錄入城，原礦靠岸。",tag:"ingest"},
+  {date:"2026-07-17～21",event:"<span class='city'>台北教育局城</span>：工程科、國民教育科、資訊教育科等科室訪談紀錄連續入城，冶煉前的原礦大量到港。",tag:"ingest"},
+  {date:"2026-06-13",event:"首都『過橋驛站』收到兩件升級候選——<span class='city'>商發署 V2</span>、<span class='city'>國圖</span> 第一輪彙整，等致遠裁決過橋。",tag:"bridge"},
+];
+document.getElementById("timeline").innerHTML = CHRON.map(c=>
+  `<div class="tl${c.milestone?' milestone':''}"><div class="date">${c.date}</div>
+   <div class="event">${c.event} <span class="tag">· ${c.tag}</span></div></div>`).join("");
+
+/* ====================== 增量圖例 ====================== */
+const INC=[
+  ["📦","一份 raw 進城","碼頭卸下一箱原礦（訪談、會議、簡報）"],
+  ["🏗️","agent 建索引 / 彙整","城裡起了一棟新樓，內容變厚"],
+  ["💡","產出跨訪談洞察","城樓亮燈——有洞察，才算真的有人住"],
+  ["🗣️","一條金句成形","送往首都名言堂，等致遠核定"],
+  ["🌉","升級候選過橋","一件原則收進首都憲章，供下個案重用"],
+  ["🏛️","專案結案","遷入城史區，知識有記憶地封存"],
+  ["🕯️","一兩月沒異動","城燈轉冷——規劃師該排一次巡城了"],
+  ["🕊️","對外演講","使節出使，把城裡洞察翻成長官語言"],
+];
+document.getElementById("incGrid").innerHTML = INC.map(i=>
+  `<div class="inc"><div class="em">${i[0]}</div><div class="tx"><b>${i[1]}</b><span>${i[2]}</span></div></div>`).join("");
+
+/* ====================== 視角切換 ====================== */
+document.querySelectorAll(".mode-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".mode-btn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.body.dataset.lens=b.dataset.lens;
+    document.getElementById("fedSvg").classList.remove("lens-active","lens-plan");
+    if(b.dataset.lens==="active") document.getElementById("fedSvg").classList.add("lens-active");
+    if(b.dataset.lens==="plan") document.getElementById("fedSvg").classList.add("lens-plan");
+  });
+});
+
+/* ====================== 細節面板 ====================== */
+const panel=document.getElementById("panel");
+function openPanel(o){
+  document.getElementById("pKicker").textContent=o.kicker;
+  document.getElementById("pName").textContent=o.name;
+  const st=document.getElementById("pStatus");
+  st.style.background="rgba(255,255,255,0.04)";st.style.border="1px solid "+o.statusColor;st.style.color=o.statusColor;
+  st.innerHTML=`<span style="width:8px;height:8px;border-radius:50%;background:${o.statusColor};display:inline-block"></span>${o.statusText}`;
+  document.getElementById("pMeaning").textContent=o.meaning;
+  document.getElementById("pBody").innerHTML=o.html||"";
+  panel.classList.add("open");
+}
+function openCity(c){
+  const sc = STC[c.status[0]]||"var(--muted-2)";
+  let html="";
+  html+=`<h3>檔案規模</h3><ul><li>${c.md} 篇 md · ${c.files} 個檔案 · 最後更新 ${c.last}</li><li>本週異動 ${c.week} 個檔案</li></ul>`;
+  if(c.insights&&c.insights.length){
+    html+=`<h3>本週洞察</h3><ul>${c.insights.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+  }
+  if(c.quotes&&c.quotes.length){
+    html+=`<h3>金句候選</h3>${c.quotes.map(q=>`<div class="pq">「${q}」</div>`).join("")}`;
+  }
+  if(c.dormant){ html+=`<h3>為什麼冷了</h3><ul><li>${c.dormant}</li></ul>`; }
+  for(const k in (c.body||{})){
+    const warn=k.includes("⚠️")||k.includes("補件");
+    html+=`<h3>${k}</h3><ul>${c.body[k].map(s=>`<li class="${warn?'warn':''}">${s}</li>`).join("")}</ul>`;
+  }
+  openPanel({kicker:c.type,name:c.icon+" "+c.name,statusColor:sc,statusText:c.status[1],meaning:c.meaning,html});
+}
+function openCapitalPanel(){
+  let html=`<h3>立城初衷</h3><div class="pq">「${CAPITAL.mission}」</div><ul><li>${CAPITAL.desc}</li></ul>`;
+  html+=`<h3>中樞機構</h3><ul>${CAPITAL.insts.map(i=>`<li>${i.nm.replace(/^..\s/,'')}——${i.ds}</li>`).join("")}</ul>`;
+  html+=`<h3>🌉 過橋驛站 · 待裁決</h3><ul>${CAPITAL.bridge.map(b=>`<li>${b}</li>`).join("")}</ul>`;
+  openPanel({kicker:"公司wiki（首都）",name:"🏛️ 致遠聯邦中樞",statusColor:"var(--seal)",statusText:"活的 playbook · 致遠主責",
+    meaning:"成員城各自為政，但驗證過的原則要送進首都才會被下一個案子重用。這裡是過橋的終點。",html});
+}
+document.getElementById("closePanel").addEventListener("click",()=>panel.classList.remove("open"));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")panel.classList.remove("open");});
+</script>
+</body>
+</html>

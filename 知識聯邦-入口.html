@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>致遠知識聯邦 · 門廳</title>
+<style>
+  :root{
+    --ink:#0a0e17; --ink-2:#0f1521; --seal:#c9a24e; --seal-bright:#e7c877;
+    --parch:#eef1f4; --muted:#8b94a6; --muted-2:#5f6a7e; --line:rgba(201,162,78,0.16);
+    --pre:#6ea3c9; --mid:#e6b24d; --post:#79b06f;
+    --font-display:"Noto Serif TC","Songti TC",serif;
+    --font-body:"Noto Sans TC","PingFang TC",system-ui,sans-serif;
+    --font-num:"SFMono-Regular",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--ink);color:var(--parch);font-family:var(--font-body);-webkit-font-smoothing:antialiased;line-height:1.75}
+  body{background:radial-gradient(ellipse 62% 48% at 50% -8%, rgba(201,162,78,0.12), transparent),radial-gradient(ellipse 55% 45% at 15% 112%, rgba(110,163,201,0.09), transparent),radial-gradient(ellipse 55% 45% at 88% 112%, rgba(121,176,111,0.09), transparent),var(--ink);min-height:100vh;padding:clamp(20px,4vw,64px) clamp(16px,3vw,44px)}
+  .wrap{max-width:1080px;margin:0 auto}
+
+  header.hall{text-align:center;padding:14px 0 8px}
+  .emblem{width:64px;height:64px;margin:0 auto 18px;display:block}
+  .kicker{font-size:.76rem;letter-spacing:.46em;color:var(--seal);text-transform:uppercase;margin-bottom:14px}
+  h1.title{font-family:var(--font-display);font-weight:700;font-size:clamp(2.4rem,6vw,4rem);letter-spacing:.08em;line-height:1.08}
+  .story{color:var(--muted);margin:20px auto 0;font-size:1.08rem;max-width:640px;line-height:1.85}
+  .story b{color:var(--parch);font-weight:600}
+  .ask{font-family:var(--font-display);font-style:italic;color:var(--seal-bright);font-size:1.18rem;margin-top:14px}
+
+  /* 本週速覽 */
+  .glance{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:30px 0 8px}
+  .g{background:rgba(255,255,255,0.025);border:1px solid var(--line);border-radius:11px;padding:11px 17px;text-align:center;min-width:104px}
+  .g .n{font-family:var(--font-display);font-size:1.4rem;font-weight:700;color:var(--seal-bright);line-height:1}
+  .g .l{font-size:.68rem;color:var(--muted);margin-top:6px;letter-spacing:.03em}
+  .glance-cap{text-align:center;color:var(--muted-2);font-size:.78rem;letter-spacing:.08em;font-family:var(--font-display);margin-top:4px}
+
+  /* 兩道門 */
+  .doors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:34px 0 8px}
+  @media(max-width:720px){.doors{grid-template-columns:1fr}}
+  .door{display:block;text-decoration:none;color:inherit;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.008));
+    border:1px solid var(--line);border-radius:18px;padding:26px 26px 22px;transition:.24s}
+  .door::before{content:"";position:absolute;left:0;top:0;height:100%;width:5px;background:var(--accent);opacity:.85}
+  .door:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 18px 46px rgba(0,0,0,.4)}
+  .door .glyph{height:76px;margin-bottom:14px}
+  .door .d-kick{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-family:var(--font-num)}
+  .door h2{font-family:var(--font-display);font-size:1.6rem;font-weight:700;letter-spacing:.03em;margin:5px 0 8px}
+  .door p{color:var(--muted);font-size:.92rem;line-height:1.7}
+  .door p b{color:var(--parch)}
+  .door .feel{display:inline-block;margin-top:12px;font-size:.82rem;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:4px 13px}
+  .door .mini{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);font-family:var(--font-num);display:flex;justify-content:space-between;align-items:center}
+  .door .enter{color:var(--accent);font-weight:600;font-family:var(--font-body)}
+  .door.map{--accent:var(--pre)}
+  .door.road{--accent:var(--mid)}
+
+  /* 次要連結 */
+  .aside-links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:22px 0 0}
+  .al{display:flex;align-items:center;gap:8px;text-decoration:none;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:10px;padding:9px 15px;color:var(--muted);font-size:.84rem;transition:.18s}
+  .al:hover{border-color:var(--seal);color:var(--parch)}
+  .al b{color:var(--seal);font-weight:600}
+
+  footer.foot{text-align:center;color:var(--muted-2);font-size:.82rem;margin-top:34px;padding-top:20px;border-top:1px solid var(--line);line-height:1.9}
+  footer.foot b{color:var(--seal)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hall">
+    <svg class="emblem" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="29" stroke="var(--seal)" stroke-width="1.5" opacity=".6"/>
+      <circle cx="32" cy="32" r="22" stroke="var(--seal)" stroke-width="1" opacity=".32"/>
+      <path d="M32 11 L37.5 26 L53 27 L40.5 37 L45 52 L32 43 L19 52 L23.5 37 L11 27 L26.5 26 Z" fill="var(--seal)" opacity=".88"/>
+    </svg>
+    <div class="kicker">Zhiyuan · Knowledge Federation</div>
+    <h1 class="title">致遠知識聯邦</h1>
+    <p class="story">每個人有一座自己的<b>城邦</b>；公司，是這些城邦共組的<b>聯邦</b>。<br>成員城散布在疆域上，一條<b>服務大道</b>貫穿其中、通往<b>首都</b>。</p>
+    <div class="ask">你想看城，還是看路？</div>
+  </header>
+
+  <div class="glance" id="glance"></div>
+  <div class="glance-cap" id="glanceCap"></div>
+
+  <div class="doors">
+    <a class="door map" href="知識聯邦-Dashboard.html">
+      <svg class="glyph" viewBox="0 0 200 76" fill="none">
+        <rect x="1" y="1" width="198" height="74" rx="10" stroke="rgba(110,163,201,0.18)"/>
+        <g opacity=".5" stroke="rgba(110,163,201,0.25)"><path d="M20 20 h160"/><path d="M20 40 h160"/><path d="M20 58 h160"/></g>
+        <!-- 城點：亮暗不一 -->
+        <g>
+          <circle cx="52" cy="26" r="7" fill="var(--pre)" opacity=".95"/><circle cx="52" cy="26" r="13" fill="var(--pre)" opacity=".14"/>
+          <circle cx="120" cy="22" r="9" fill="var(--seal-bright)"/><circle cx="120" cy="22" r="16" fill="var(--seal-bright)" opacity=".16"/>
+          <circle cx="150" cy="48" r="5" fill="var(--pre)" opacity=".7"/>
+          <circle cx="86" cy="52" r="4" fill="var(--muted-2)"/>
+          <circle cx="168" cy="30" r="4" fill="var(--muted-2)"/>
+          <rect x="94" y="38" width="14" height="10" rx="2" fill="none" stroke="var(--seal)" opacity=".6"/>
+        </g>
+      </svg>
+      <div class="d-kick">The Territory</div>
+      <h2>🗺️ 聯邦疆域圖</h2>
+      <p>俯瞰整片疆域：<b>哪座城燈火通明、哪座冷了、過橋候選在誰手上</b>。城樓越高，累積越厚。</p>
+      <span class="feel">給你空間感與歸屬感</span>
+      <div class="mini"><span>9 成員城 · 本週 2 座在動</span><span class="enter">進入 →</span></div>
+    </a>
+
+    <a class="door road" href="服務藍圖貢獻軸-Dashboard.html">
+      <svg class="glyph" viewBox="0 0 200 76" fill="none">
+        <rect x="1" y="1" width="198" height="74" rx="10" stroke="rgba(230,178,77,0.18)"/>
+        <!-- 三段路 + 里程碑 + 首都 -->
+        <path d="M14 58 L70 58" stroke="var(--pre)" stroke-width="3"/>
+        <path d="M70 58 C 96 58, 104 34, 132 34" stroke="var(--mid)" stroke-width="3"/>
+        <path d="M132 34 L176 34" stroke="var(--post)" stroke-width="3"/>
+        <g stroke-dasharray="2 4" stroke="rgba(255,255,255,.35)" stroke-width="1"><path d="M14 58 L70 58"/><path d="M70 58 C 96 58,104 34,132 34"/><path d="M132 34 L176 34"/></g>
+        <!-- 里程碑旗（提案=立起） -->
+        <g><line x1="42" y1="58" x2="42" y2="44" stroke="var(--pre)" stroke-width="1.4"/><path d="M42 44 l10 3 l-10 3 z" fill="var(--pre)"/></g>
+        <circle cx="100" cy="46" r="2.5" fill="var(--mid)"/><circle cx="150" cy="34" r="2.5" fill="var(--post)"/>
+        <!-- 首都 -->
+        <circle cx="184" cy="34" r="8" fill="none" stroke="var(--seal)" stroke-width="1.5"/>
+        <path d="M184 29 l1.6 3.4 l3.6 .3 l-2.7 2.4 l.8 3.5 l-3.3-2 l-3.3 2 l.8-3.5 l-2.7-2.4 l3.6-.3 z" fill="var(--seal-bright)"/>
+      </svg>
+      <div class="d-kick">The Great Road</div>
+      <h2>🛣️ 服務大道 · 貢獻軸</h2>
+      <p>每個案子都走的同一條路：前／中／後三段，<b>這週誰鋪了哪塊石、藍圖長高多少</b>。你鋪的石，下個案走過會更順。</p>
+      <span class="feel">給你累積感與意義感</span>
+      <div class="mini"><span>本週 +79 檔異動 · 12 塊路石</span><span class="enter">進入 →</span></div>
+    </a>
+  </div>
+
+  <div class="aside-links">
+    <a class="al" href="公司wiki/服務藍圖貢獻_標記與採收規範.md">📐 <span>大道規約 · <b>標記與採收規範</b></span></a>
+    <a class="al" href="公司wiki/合作者的回流/本週採收_2026-07-23.md">🧺 <span>本週採收清單 · <b>待認領</b></span></a>
+  </div>
+
+  <footer class="foot">
+    聯邦快照 · <span id="footDate"></span>　—　每週一早上自動重掃、更新這兩張看板與採收清單。<br>
+    <b>看城給歸屬，看路給意義。</b>兩張看的是同一批資料，只是站在不同的地方看。
+  </footer>
+</div>
+
+<script>
+const ASOF="2026-07-23";
+const glance=[
+  {n:"+79",l:"本週檔異動"},
+  {n:"2 / 9",l:"本週在動的城"},
+  {n:"12",l:"本週貢獻路石"},
+  {n:"3",l:"過橋候選待裁"},
+  {n:"1 / 7",l:"階段原則成文"},
+];
+document.getElementById("glance").innerHTML=glance.map(g=>`<div class="g"><div class="n">${g.n}</div><div class="l">${g.l}</div></div>`).join("");
+document.getElementById("glanceCap").textContent="本週速覽 · "+ASOF;
+document.getElementById("footDate").textContent=ASOF;
+</script>
+</body>
+</html>
